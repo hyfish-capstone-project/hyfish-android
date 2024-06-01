@@ -9,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.hyfish.app.databinding.ActivityMainBinding
 import com.hyfish.app.view.login.LoginActivity
 import com.hyfish.app.R
+import com.hyfish.app.view.register.RegisterActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btRegister.setOnClickListener {
-//
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
         binding.btLogin.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))

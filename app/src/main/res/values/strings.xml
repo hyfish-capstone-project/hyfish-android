@@ -1,5 +1,19 @@
 <resources>
     <string name="app_name">HyFish</string>
-    <string name="title_register">Create a New Account</string>
+
+    <string name="hyfish_logo">HyFish Logo</string>
+
+    <string name="register_title">Create a New Account</string>
+    <string name="register_to_login">Already have an account? Log In</string>
     <string name="register">Register</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+
+    <string name="login_title">Welcome back!</string>
+    <string name="login_to_register">Don’t have an account? Register</string>
+    <string name="login">Login</string>
+
+    <string name="cv_password_error">Password cannot be less than 8 characters</string>
 </resources>

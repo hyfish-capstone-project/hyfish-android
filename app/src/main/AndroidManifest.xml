@@ -25,6 +25,10 @@
             android:name=".view.login.LoginActivity"
             android:exported="false">
         </activity>
+        <activity
+            android:name=".view.register.RegisterActivity"
+            android:exported="false">
+        </activity>
     </application>
 
 </manifest>
