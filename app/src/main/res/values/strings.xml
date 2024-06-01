@@ -10,10 +10,16 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="register_success">Account registered successfully</string>
+    <string name="register_confirm">Password and confirm password do not match</string>
 
     <string name="login_title">Welcome back!</string>
     <string name="login_to_register">Don’t have an account? Register</string>
     <string name="login">Login</string>
 
     <string name="cv_password_error">Password cannot be less than 8 characters</string>
+
+    <string name="error">Error</string>
+    <string name="success">Success</string>
+    <string name="ok">OK</string>
 </resources>
