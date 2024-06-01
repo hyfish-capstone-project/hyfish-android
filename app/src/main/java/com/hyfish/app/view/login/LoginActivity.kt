@@ -24,6 +24,8 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
+        supportActionBar?.hide()
+
         binding.textView.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
