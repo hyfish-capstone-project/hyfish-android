@@ -1,4 +1,4 @@
-package com.hyfish.app
+package com.hyfish.app.view.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.hyfish.app.databinding.ActivityMainBinding
 import com.hyfish.app.view.login.LoginActivity
+import com.hyfish.app.R
 
 class MainActivity : AppCompatActivity() {
 
