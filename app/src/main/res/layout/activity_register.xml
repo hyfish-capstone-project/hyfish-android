@@ -73,7 +73,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="362dp">
 
-        <com.dicoding.picodiploma.loginwithanimation.view.edit.PasswordInputEditText
+        <com.hyfish.app.view.customview.PasswordCharacters
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
