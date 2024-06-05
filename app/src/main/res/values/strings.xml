@@ -22,4 +22,11 @@
     <string name="error">Error</string>
     <string name="success">Success</string>
     <string name="ok">OK</string>
+    <string name="main_greetings">Hello, %1$s</string>
+    <string name="avatar">avatar</string>
+    <string name="main_articles">Articles for you!</string>
+    <string name="see_all">See all</string>
+    <string name="main_scans">Recent scans</string>
+    <string name="item_story_title">Title</string>
+    <string name="item_story_desc">Description</string>
 </resources>
