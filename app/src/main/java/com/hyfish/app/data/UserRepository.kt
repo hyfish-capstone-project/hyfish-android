@@ -1,5 +1,7 @@
 package com.hyfish.app.data
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.hyfish.app.data.api.ApiConfig
 import com.hyfish.app.data.api.LoginRequest
 import com.hyfish.app.data.api.RegisterRequest
@@ -11,6 +13,9 @@ class UserRepository private constructor(
     private val userPreference: UserPreference
 ) {
     private val apiService = ApiConfig.getApiService()
+
+    private val _userModel = MutableLiveData<UserModel>()
+    val userModel: LiveData<UserModel> = _userModel
 
     suspend fun saveSession(user: UserModel) {
         userPreference.saveSession(user)
