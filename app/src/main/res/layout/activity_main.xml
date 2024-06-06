@@ -79,7 +79,7 @@
 
 
     <TextView
-        android:id="@+id/tv_scans"
+        android:id="@+id/tv_captures"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -91,24 +91,25 @@
         app:layout_constraintTop_toBottomOf="@+id/rv_articles" />
 
     <TextView
-        android:id="@+id/tv_seall_scans"
+        android:id="@+id/tv_seall_captures"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="@string/see_all"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/md_theme_secondary"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_scans"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_captures"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_scans" />
+        app:layout_constraintTop_toTopOf="@+id/tv_captures" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_captures"
         android:layout_width="409dp"
         android:layout_height="377dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_scans" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_captures" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

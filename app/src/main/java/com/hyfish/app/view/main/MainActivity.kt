@@ -9,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hyfish.app.R
 import com.hyfish.app.data.api.ArticleItem
+import com.hyfish.app.data.api.CaptureItem
 import com.hyfish.app.databinding.ActivityMainBinding
 import com.hyfish.app.view.ViewModelFactory
 
@@ -41,8 +42,8 @@ class MainActivity : AppCompatActivity() {
         binding.rvArticles.layoutManager = LinearLayoutManager(this).apply {
             orientation = LinearLayoutManager.HORIZONTAL
         }
-        val adapter = ArticleAdapter()
-        binding.rvArticles.adapter = adapter
+        val articleAdapter = ArticleAdapter()
+        binding.rvArticles.adapter = articleAdapter
 
         val dummyArticles = mutableListOf<ArticleItem>()
         for (i in 0..10) {
@@ -56,6 +57,24 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         }
-        adapter.submitList(dummyArticles)
+        articleAdapter.submitList(dummyArticles)
+
+        binding.rvCaptures.layoutManager = LinearLayoutManager(this)
+        val captureAdapter = CaptureAdapter()
+        binding.rvCaptures.adapter = captureAdapter
+
+        val dummyCaptures = mutableListOf<CaptureItem>()
+        for (i in 0..10) {
+            dummyCaptures.add(
+                CaptureItem(
+                    image = "https://picsum.photos/200/300",
+                    result = "Result $i",
+                    createdAt = "2021-08-01 12:00:00",
+                    id = i,
+                    rate = 99
+                )
+            )
+        }
+        captureAdapter.submitList(dummyCaptures)
     }
 }

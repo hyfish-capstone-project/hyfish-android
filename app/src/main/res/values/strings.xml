@@ -27,6 +27,8 @@
     <string name="main_articles">Articles for you!</string>
     <string name="see_all">See all</string>
     <string name="main_scans">Recent scans</string>
-    <string name="item_story_title">Title</string>
-    <string name="item_story_desc">Description</string>
+
+    <string name="item_title">Title</string>
+    <string name="item_description">Description</string>
+    <string name="item_date">Date</string>
 </resources>
