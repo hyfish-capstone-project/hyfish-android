@@ -31,4 +31,9 @@
     <string name="item_title">Title</string>
     <string name="item_description">Description</string>
     <string name="item_date">Date</string>
+
+    <string name="title_home">Home</string>
+    <string name="title_forum">Forum</string>
+    <string name="title_history">History</string>
+    <string name="title_fishes">Fishes</string>
 </resources>

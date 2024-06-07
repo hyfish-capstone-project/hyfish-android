@@ -1,7 +1,6 @@
-package com.hyfish.app.view.main
+package com.hyfish.app.view.home
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -10,25 +9,27 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hyfish.app.R
 import com.hyfish.app.data.api.ArticleItem
 import com.hyfish.app.data.api.CaptureItem
-import com.hyfish.app.databinding.ActivityMainBinding
+import com.hyfish.app.databinding.ActivityHomeBinding
 import com.hyfish.app.view.ViewModelFactory
 
-class MainActivity : AppCompatActivity() {
-    private val viewModel by viewModels<MainViewModel> {
+class HomeActivity : AppCompatActivity() {
+    private val viewModel by viewModels<HomeViewModel> {
         ViewModelFactory.getInstance(this)
     }
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = ActivityMainBinding.inflate(layoutInflater)
+
+        binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        supportActionBar?.hide()
 
         viewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {

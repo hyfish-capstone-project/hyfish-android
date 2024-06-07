@@ -1,4 +1,4 @@
-package com.hyfish.app.view.main
+package com.hyfish.app.view.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
