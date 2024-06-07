@@ -1,4 +1,4 @@
-package com.hyfish.app.view.main
+package com.hyfish.app.view.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +8,7 @@ import com.hyfish.app.data.UserRepository
 import com.hyfish.app.data.pref.UserModel
 import kotlinx.coroutines.launch
 
-class MainViewModel(
+class HomeViewModel(
     private val userRepo: UserRepository
 ) : ViewModel() {
     fun getSession(): LiveData<UserModel> {

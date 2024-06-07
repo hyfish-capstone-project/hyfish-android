@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.hyfish.app.data.UserRepository
 import com.hyfish.app.di.Injection
-import com.hyfish.app.view.main.MainViewModel
+import com.hyfish.app.view.home.HomeViewModel
 import com.hyfish.app.view.register.RegisterViewModel
 
 class ViewModelFactory(
@@ -18,8 +18,8 @@ class ViewModelFactory(
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
                 RegisterViewModel(userRepo) as T
             }
-            modelClass.isAssignableFrom(MainViewModel::class.java) -> {
-                MainViewModel(userRepo) as T
+            modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
+                HomeViewModel(userRepo) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
