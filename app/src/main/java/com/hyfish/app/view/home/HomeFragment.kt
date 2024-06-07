@@ -1,37 +1,40 @@
 package com.hyfish.app.view.home
 
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hyfish.app.R
 import com.hyfish.app.data.api.ArticleItem
 import com.hyfish.app.data.api.CaptureItem
-import com.hyfish.app.databinding.ActivityHomeBinding
+import com.hyfish.app.databinding.FragmentHomeBinding
 import com.hyfish.app.view.ViewModelFactory
 
-class HomeActivity : AppCompatActivity() {
-    private val viewModel by viewModels<HomeViewModel> {
-        ViewModelFactory.getInstance(this)
-    }
-    private lateinit var binding: ActivityHomeBinding
+class HomeFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
-        binding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val viewModel = ViewModelFactory.getInstance(requireActivity()).create(HomeViewModel::class.java)
+
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        val root: View = binding.root
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        supportActionBar?.hide()
-
-        viewModel.getSession().observe(this) { user ->
+        viewModel.getSession().observe(viewLifecycleOwner) { user ->
             if (!user.isLogin) {
 //                startActivity(Intent(this, LoginActivity::class.java))
 //                finish()
@@ -40,7 +43,7 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        binding.rvArticles.layoutManager = LinearLayoutManager(this).apply {
+        binding.rvArticles.layoutManager = LinearLayoutManager(activity).apply {
             orientation = LinearLayoutManager.HORIZONTAL
         }
         val articleAdapter = ArticleAdapter()
@@ -60,7 +63,7 @@ class HomeActivity : AppCompatActivity() {
         }
         articleAdapter.submitList(dummyArticles)
 
-        binding.rvCaptures.layoutManager = LinearLayoutManager(this)
+        binding.rvCaptures.layoutManager = LinearLayoutManager(activity)
         val captureAdapter = CaptureAdapter()
         binding.rvCaptures.adapter = captureAdapter
 
@@ -77,5 +80,12 @@ class HomeActivity : AppCompatActivity() {
             )
         }
         captureAdapter.submitList(dummyCaptures)
+
+        return root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
