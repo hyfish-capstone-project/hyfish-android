@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.hyfish.app.R
 import com.hyfish.app.data.api.LoginRequest
+import com.hyfish.app.data.pref.UserModel
 import com.hyfish.app.databinding.ActivityLoginBinding
 import com.hyfish.app.view.ViewModelFactory
 import com.hyfish.app.view.register.RegisterActivity
@@ -50,7 +51,22 @@ class LoginActivity : AppCompatActivity() {
                 showError(message)
             }
         }
+
         setupAction()
+        setupViewModel()
+    }
+
+    private fun setupViewModel() {
+        viewModel.userModel().observe(this) { userModel ->
+            val model = UserModel(
+                userModel.id,
+                userModel.username,
+                userModel.email,
+                userModel.token,
+                userModel.isLogin
+            )
+            viewModel.saveSession(model)
+        }
     }
 
     private fun setupAction() {
