@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.hyfish.app.data.api.PostItem
 import com.hyfish.app.databinding.FragmentForumBinding
 
 class ForumFragment : Fragment() {
@@ -22,11 +24,24 @@ class ForumFragment : Fragment() {
 
         _binding = FragmentForumBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        binding.rvPosts.layoutManager = LinearLayoutManager(activity)
+        val postAdapter = PostAdapter()
+        binding.rvPosts.adapter = postAdapter
+
+        val dummyPost = mutableListOf<PostItem>()
+        for (i in 0..10) {
+            dummyPost.add(
+                PostItem(
+                    title = "Post $i",
+                    body = "This is the body of post $i",
+                    images = listOf("https://picsum.photos/200/300"),
+                    like = 99,
+                    comment = 99
+                )
+            )
         }
+        postAdapter.submitList(dummyPost)
 
         return root
     }

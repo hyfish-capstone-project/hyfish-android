@@ -36,4 +36,11 @@
     <string name="title_forum">Forum</string>
     <string name="title_history">History</string>
     <string name="title_fishes">Fishes</string>
+
+    <string name="create_post">Create Post</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis bibendum magna quis venenatis. Donec et sem tincidunt, sodales lectus faucibus, semper velit …</string>
+    <string name="like">Like</string>
+    <string name="comment">Comment</string>
+    <string name="item_likes">%1$d Likes</string>
+    <string name="item_comments">%1$d Comments</string>
 </resources>

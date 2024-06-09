@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hyfish.app.R
@@ -28,16 +26,11 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         viewModel.getSession().observe(viewLifecycleOwner) { user ->
             if (!user.isLogin) {
-//                startActivity(Intent(this, LoginActivity::class.java))
-//                finish()
+//                startActivity(Intent(activity, LoginActivity::class.java))
+//                activity?.finish()
             } else {
                 binding.tvGreetings.text = getString(R.string.main_greetings, user.username)
             }

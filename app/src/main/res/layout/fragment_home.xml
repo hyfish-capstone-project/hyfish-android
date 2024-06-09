@@ -20,10 +20,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_avatar"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="64dp"
             android:layout_weight="1"
             android:contentDescription="@string/avatar"
             tools:srcCompat="@tools:sample/avatars" />
@@ -104,8 +104,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_captures"
-        android:layout_width="409dp"
-        android:layout_height="377dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
