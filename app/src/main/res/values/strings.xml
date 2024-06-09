@@ -51,4 +51,6 @@
 
     <string name="create_scan">Create a Scan</string>
     <string name="title_scan_result">Scan Result</string>
+    <string name="field_required">This field is required</string>
+    <string name="logout">Logout</string>
 </resources>

@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.hyfish.app.data.UserRepository
 import com.hyfish.app.data.api.ErrorResponse
-import com.hyfish.app.data.api.RegisterData
-import com.hyfish.app.data.api.RegisterRequest
+import com.hyfish.app.data.api.auth.RegisterData
+import com.hyfish.app.data.api.auth.RegisterRequest
 import com.hyfish.app.util.EventOnce
 import kotlinx.coroutines.launch
 import retrofit2.HttpException

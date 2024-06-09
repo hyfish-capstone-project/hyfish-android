@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hyfish.app.R
-import com.hyfish.app.data.api.ArticleItem
 import com.hyfish.app.data.api.CaptureItem
 import com.hyfish.app.databinding.FragmentHomeBinding
 import com.hyfish.app.view.ViewModelFactory
+import com.hyfish.app.view.login.LoginActivity
 import com.hyfish.app.view.scan.ScanActivity
 
 class HomeFragment : Fragment() {
@@ -31,10 +31,11 @@ class HomeFragment : Fragment() {
 
         viewModel.getSession().observe(viewLifecycleOwner) { user ->
             if (!user.isLogin) {
-//                startActivity(Intent(activity, LoginActivity::class.java))
-//                activity?.finish()
+                startActivity(Intent(activity, LoginActivity::class.java))
+                activity?.finish()
             } else {
-                binding.tvGreetings.text = getString(R.string.main_greetings, user.username)
+                binding.tvGreetings.text = getString(R.string.main_greetings, user.role)
+                viewModel.getArticles()
             }
         }
 
@@ -44,19 +45,9 @@ class HomeFragment : Fragment() {
         val articleAdapter = ArticleAdapter()
         binding.rvArticles.adapter = articleAdapter
 
-        val dummyArticles = mutableListOf<ArticleItem>()
-        for (i in 0..10) {
-            dummyArticles.add(
-                ArticleItem(
-                    title = "Article $i",
-                    body = "This is the body of article $i",
-                    images = listOf("https://picsum.photos/200/300"),
-                    like = 99,
-                    comment = 99
-                )
-            )
+        viewModel.articles.observe(viewLifecycleOwner) { articles ->
+            articleAdapter.submitList(articles)
         }
-        articleAdapter.submitList(dummyArticles)
 
         binding.rvCaptures.layoutManager = LinearLayoutManager(activity)
         val captureAdapter = CaptureAdapter()
@@ -79,6 +70,10 @@ class HomeFragment : Fragment() {
         binding.fabCreateScan.setOnClickListener {
             val intent = Intent(activity, ScanActivity::class.java)
             startActivity(intent)
+        }
+
+        binding.btLogout.setOnClickListener {
+            viewModel.logout()
         }
 
         return root
