@@ -1,25 +1,60 @@
 package com.hyfish.app.view.scan
 
-import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.hyfish.app.R
+import com.hyfish.app.databinding.ActivityScanBinding
 
 class ScanActivity : AppCompatActivity() {
+    private var currentImageUri: Uri? = null
+    private lateinit var binding: ActivityScanBinding
+    private val launchGallery =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+            if (uri != null) {
+                currentImageUri = uri
+                currentImageUri?.let {
+                    Log.d(TAG, "Selected image: $it")
+//                    binding.previewImage.setImageURI(it)
+//                    Gambar preview yang discan
+                }
+            } else {
+                Log.d(IMAGE_PICKER_TAG, "No media selected")
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_scan)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        binding = ActivityScanBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val intent = Intent(this, ScanResultActivity::class.java)
-        startActivity(intent)
+//        binding.galleryButton.setOnClickListener {
+//            launchGallery.launch(
+//                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+//            )
+//        }
+
+//        binding.scanButton.setOnClickListener {
+//            if (currentImageUri != null) {
+//                val intent = Intent(this, ScanResultActivity::class.java)
+//                intent.putExtra(ScanResultActivity.EXTRA, currentImageUri.toString())
+//                startActivity(intent)
+//            } else {
+//                showToast(getString(R.string.no_image_found))
+//            }
+//        }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        private const val TAG = "ImageURI"
+        private const val IMAGE_PICKER_TAG = "ImagePicker"
     }
 }
