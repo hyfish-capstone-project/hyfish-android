@@ -1,5 +1,6 @@
 package com.hyfish.app.view.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import com.hyfish.app.data.api.ArticleItem
 import com.hyfish.app.data.api.CaptureItem
 import com.hyfish.app.databinding.FragmentHomeBinding
 import com.hyfish.app.view.ViewModelFactory
+import com.hyfish.app.view.scan.ScanActivity
 
 class HomeFragment : Fragment() {
 
@@ -73,6 +75,11 @@ class HomeFragment : Fragment() {
             )
         }
         captureAdapter.submitList(dummyCaptures)
+
+        binding.fabCreateScan.setOnClickListener {
+            val intent = Intent(activity, ScanActivity::class.java)
+            startActivity(intent)
+        }
 
         return root
     }

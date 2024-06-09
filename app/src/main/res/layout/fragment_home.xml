@@ -22,7 +22,7 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_avatar"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="64dp"
             android:layout_weight="1"
             android:contentDescription="@string/avatar"
@@ -111,5 +111,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_captures" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_create_scan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:contentDescription="@string/create_scan"
+        android:focusable="true"
+        android:src="@drawable/ic_camera"
+        app:backgroundTint="@color/md_theme_secondaryContainer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
