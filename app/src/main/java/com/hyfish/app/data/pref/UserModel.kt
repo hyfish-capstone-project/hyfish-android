@@ -1,9 +1,10 @@
 package com.hyfish.app.data.pref
 
 data class UserModel(
-    val id: Int,
-    val username: String,
-    val email: String,
     val token: String,
-    val isLogin: Boolean = false,
+    val role: String,
+    val isLogin: Boolean = true,
+    val id: Int? = null,
+    val username: String? = null,
+    val email: String? = null,
 )

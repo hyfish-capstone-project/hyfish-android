@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.hyfish.app.data.UserRepository
 import com.hyfish.app.data.api.ErrorResponse
-import com.hyfish.app.data.api.LoginData
-import com.hyfish.app.data.api.LoginRequest
+import com.hyfish.app.data.api.auth.LoginData
+import com.hyfish.app.data.api.auth.LoginRequest
 import com.hyfish.app.data.pref.UserModel
 import com.hyfish.app.util.EventOnce
 import kotlinx.coroutines.launch
@@ -46,6 +46,4 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
             }
         }
     }
-
-    fun userModel(): LiveData<UserModel> = repository.userModel
 }

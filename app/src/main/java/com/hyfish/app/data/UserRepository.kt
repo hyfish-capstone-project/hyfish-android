@@ -1,10 +1,8 @@
 package com.hyfish.app.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.hyfish.app.data.api.ApiConfig
-import com.hyfish.app.data.api.LoginRequest
-import com.hyfish.app.data.api.RegisterRequest
+import com.hyfish.app.data.api.auth.LoginRequest
+import com.hyfish.app.data.api.auth.RegisterRequest
 import com.hyfish.app.data.pref.UserModel
 import com.hyfish.app.data.pref.UserPreference
 import kotlinx.coroutines.flow.Flow
@@ -12,10 +10,7 @@ import kotlinx.coroutines.flow.Flow
 class UserRepository private constructor(
     private val userPreference: UserPreference
 ) {
-    private val apiService = ApiConfig.getApiService()
-
-    private val _userModel = MutableLiveData<UserModel>()
-    val userModel: LiveData<UserModel> = _userModel
+    private val apiServiceNoToken = ApiConfig.getApiService()
 
     suspend fun saveSession(user: UserModel) {
         userPreference.saveSession(user)
@@ -25,11 +20,14 @@ class UserRepository private constructor(
         return userPreference.getSession()
     }
 
-    suspend fun register(data: RegisterRequest) = apiService.register(data)
+    suspend fun register(data: RegisterRequest) = apiServiceNoToken.register(data)
 
-    suspend fun login(data: LoginRequest) = apiService.login(data)
+    suspend fun login(data: LoginRequest) = apiServiceNoToken.login(data)
 
     suspend fun logout() {
+//        val user = runBlocking { userPreference.getSession().first() }
+//        val apiService = ApiConfig.getApiService(user.token)
+//        apiService.logout()
         userPreference.logout()
     }
 

@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.hyfish.app.R
-import com.hyfish.app.data.api.RegisterRequest
+import com.hyfish.app.data.api.auth.RegisterRequest
 import com.hyfish.app.databinding.ActivityRegisterBinding
 import com.hyfish.app.view.ViewModelFactory
 import com.hyfish.app.view.login.LoginActivity
@@ -59,6 +59,7 @@ class RegisterActivity : AppCompatActivity() {
                     setTitle(getString(R.string.success))
                     setMessage(getString(R.string.register_success))
                     setPositiveButton(getString(R.string.ok)) { _, _ ->
+                        startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
                         finish()
                     }
                     create()
