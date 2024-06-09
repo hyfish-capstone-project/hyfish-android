@@ -1,15 +1,15 @@
 package com.hyfish.app.view.forum
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hyfish.app.data.api.PostItem
 import com.hyfish.app.databinding.FragmentForumBinding
+import com.hyfish.app.view.forum.post.PostAddActivity
 
 class ForumFragment : Fragment() {
 
@@ -35,7 +35,7 @@ class ForumFragment : Fragment() {
                 PostItem(
                     title = "Post $i",
                     body = "This is the body of post $i",
-                    images = listOf("https://picsum.photos/200/300"),
+                    images = if (i % 2 == 0) listOf("https://picsum.photos/200/300") else emptyList(),
                     like = 99,
                     comment = 99
                 )
@@ -43,6 +43,10 @@ class ForumFragment : Fragment() {
         }
         postAdapter.submitList(dummyPost)
 
+        binding.fabCreatePost.setOnClickListener {
+            val intent = Intent(activity, PostAddActivity::class.java)
+            startActivity(intent)
+        }
         return root
     }
 

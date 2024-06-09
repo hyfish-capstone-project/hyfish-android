@@ -1,8 +1,10 @@
 package com.hyfish.app.view.forum
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -10,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.hyfish.app.R
 import com.hyfish.app.data.api.PostItem
 import com.hyfish.app.databinding.ItemPostBinding
+import com.hyfish.app.view.forum.post.PostDetailActivity
 
 class PostAdapter : ListAdapter<PostItem, PostAdapter.ItemViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -34,12 +37,13 @@ class PostAdapter : ListAdapter<PostItem, PostAdapter.ItemViewHolder>(DIFF_CALLB
             }
             binding.tvItemUsername.text = item.title
             binding.tvItemBody.text = if (item.body.length > 200) item.body.substring(0, 200) else item.body
-            binding.ivItemLikes.text = binding.root.context.getString(R.string.item_likes, item.like)
+            binding.tvItemLikes.text = binding.root.context.getString(R.string.item_likes, item.like)
+            binding.tvItemComments.text = binding.root.context.getString(R.string.item_comments, item.comment)
 
             itemView.setOnClickListener {
-//                val intent = Intent(itemView.context, DetailActivity::class.java)
-//                intent.putExtra(DetailActivity.EXTRA_POST, item)
-//
+                val intent = Intent(itemView.context, PostDetailActivity::class.java)
+                intent.putExtra(PostDetailActivity.EXTRA_POST_ID, 1)
+
 //                val optionsCompat: ActivityOptionsCompat =
 //                    ActivityOptionsCompat.makeSceneTransitionAnimation(
 //                        itemView.context as Activity,
@@ -47,8 +51,9 @@ class PostAdapter : ListAdapter<PostItem, PostAdapter.ItemViewHolder>(DIFF_CALLB
 //                        Pair(binding.tvItemTitle, "title"),
 //                        Pair(binding.tvItemDescription, "desc"),
 //                    )
-
 //                startActivity(itemView.context, intent, optionsCompat.toBundle())
+
+                startActivity(itemView.context, intent, null)
             }
         }
     }

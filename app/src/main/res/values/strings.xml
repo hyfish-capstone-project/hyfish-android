@@ -43,4 +43,9 @@
     <string name="comment">Comment</string>
     <string name="item_likes">%1$d Likes</string>
     <string name="item_comments">%1$d Comments</string>
+
+    <string name="title">Title</string>
+    <string name="body">Body</string>
+    <string name="title_add_post">Create a Post </string>
+    <string name="title_post_detail">View Post</string>
 </resources>
