@@ -4,8 +4,11 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.hyfish.app.data.ArticleRepository
+import com.hyfish.app.data.ForumRepository
 import com.hyfish.app.data.UserRepository
 import com.hyfish.app.di.Injection
+import com.hyfish.app.view.forum.ForumViewModel
+import com.hyfish.app.view.forum.post.PostAddViewModel
 import com.hyfish.app.view.home.HomeViewModel
 import com.hyfish.app.view.login.LoginViewModel
 import com.hyfish.app.view.register.RegisterViewModel
@@ -13,6 +16,7 @@ import com.hyfish.app.view.register.RegisterViewModel
 class ViewModelFactory(
     private val userRepo: UserRepository,
     private val articleRepo: ArticleRepository,
+    private val forumRepo: ForumRepository,
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -26,6 +30,12 @@ class ViewModelFactory(
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(userRepo, articleRepo) as T
+            }
+            modelClass.isAssignableFrom(ForumViewModel::class.java) -> {
+                ForumViewModel(forumRepo) as T
+            }
+            modelClass.isAssignableFrom(PostAddViewModel::class.java) -> {
+                PostAddViewModel(forumRepo) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
@@ -41,6 +51,7 @@ class ViewModelFactory(
                     INSTANCE = ViewModelFactory(
                         Injection.provideUserRepository(context),
                         Injection.provideArticleRepository(context),
+                        Injection.provideForumRepository(context),
                     )
                 }
             }
