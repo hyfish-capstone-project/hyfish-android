@@ -47,6 +47,8 @@ class ForumFragment : Fragment() {
             startActivity(intent)
         }
 
+        viewModel.getForums()
+
         return root
     }
 
