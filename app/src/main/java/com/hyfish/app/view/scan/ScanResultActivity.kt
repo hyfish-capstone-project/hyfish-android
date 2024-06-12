@@ -3,6 +3,7 @@ package com.hyfish.app.view.scan
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.hyfish.app.databinding.ActivityScanResultBinding
@@ -48,6 +49,13 @@ class ScanResultActivity : AppCompatActivity() {
                             }
 //                            binding.resultText.text = "$label ${score.turnToString()}"
 //                            Text hasil scan
+                            if (score >= 50) {
+                                binding.ivIcFresh.visibility = View.VISIBLE
+                                binding.ivIcNotFresh.visibility = View.GONE
+                            } else {
+                                binding.ivIcNotFresh.visibility = View.VISIBLE
+                                binding.ivIcFresh.visibility = View.GONE
+                            }
                         }
                     }
 

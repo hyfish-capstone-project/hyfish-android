@@ -34,7 +34,7 @@ class HomeFragment : Fragment() {
                 startActivity(Intent(activity, LoginActivity::class.java))
                 activity?.finish()
             } else {
-                binding.tvGreetings.text = getString(R.string.main_greetings, user.role)
+                binding.tvGreetings.text = getString(R.string.main_greetings, user.username)
                 viewModel.getArticles()
             }
         }
