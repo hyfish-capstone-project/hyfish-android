@@ -3,7 +3,6 @@ package com.hyfish.app.data
 import com.hyfish.app.data.api.ApiConfig
 import com.hyfish.app.data.api.CreatePostResponse
 import com.hyfish.app.data.api.ForumResponse
-import com.hyfish.app.data.api.TagsItem
 import com.hyfish.app.data.pref.UserPreference
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -22,7 +21,7 @@ class ForumRepository private constructor(
     suspend fun createPost(
         title: RequestBody,
         body: RequestBody,
-        tags: List<TagsItem>,
+        tags: List<String>,
         images: List<MultipartBody.Part>
     ): CreatePostResponse {
         val user = runBlocking { userPreference.getSession().first() }
