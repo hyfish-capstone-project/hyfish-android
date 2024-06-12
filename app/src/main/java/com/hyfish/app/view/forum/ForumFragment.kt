@@ -6,15 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.hyfish.app.data.api.PostItem
 import com.hyfish.app.databinding.FragmentForumBinding
+import com.hyfish.app.view.ViewModelFactory
 import com.hyfish.app.view.forum.post.PostAddActivity
 
 class ForumFragment : Fragment() {
 
     private var _binding: FragmentForumBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel by viewModels<ForumViewModel> {
+        ViewModelFactory.getInstance(requireActivity())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,25 +34,25 @@ class ForumFragment : Fragment() {
         val postAdapter = PostAdapter()
         binding.rvPosts.adapter = postAdapter
 
-        val dummyPost = mutableListOf<PostItem>()
-        for (i in 0..10) {
-            dummyPost.add(
-                PostItem(
-                    title = "Post $i",
-                    body = "This is the body of post $i",
-                    images = if (i % 2 == 0) listOf("https://picsum.photos/200/300") else emptyList(),
-                    like = 99,
-                    comment = 99
-                )
-            )
+        viewModel.loading.observe(viewLifecycleOwner) {
+            binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
         }
-        postAdapter.submitList(dummyPost)
+
+        viewModel.forums.observe(viewLifecycleOwner) {
+            postAdapter.submitList(it)
+        }
 
         binding.fabCreatePost.setOnClickListener {
             val intent = Intent(activity, PostAddActivity::class.java)
             startActivity(intent)
         }
+
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getForums()
     }
 
     override fun onDestroyView() {
