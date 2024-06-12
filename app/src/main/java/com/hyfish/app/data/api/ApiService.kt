@@ -38,7 +38,7 @@ interface ApiService {
     suspend fun createPost(
         @Part("title") title: RequestBody,
         @Part("body") body: RequestBody,
-        @Part("tags") tags: List<TagsItem>,
+        @Part("tags[]") tags: List<String>,
         @Part images: List<MultipartBody.Part>
     ): CreatePostResponse
 }

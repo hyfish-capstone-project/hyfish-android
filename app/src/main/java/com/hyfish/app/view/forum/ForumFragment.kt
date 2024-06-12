@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.hyfish.app.data.api.PostItem
 import com.hyfish.app.databinding.FragmentForumBinding
 import com.hyfish.app.view.ViewModelFactory
 import com.hyfish.app.view.forum.post.PostAddActivity
+import com.hyfish.app.view.forum.post.PostDetailActivity
 
 class ForumFragment : Fragment() {
 
@@ -33,6 +35,14 @@ class ForumFragment : Fragment() {
         binding.rvPosts.layoutManager = LinearLayoutManager(activity)
         val postAdapter = PostAdapter()
         binding.rvPosts.adapter = postAdapter
+        postAdapter.setOnItemClickCallback(object : PostAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: PostItem) {
+                val intent = Intent(activity, PostDetailActivity::class.java)
+                intent.putExtra(PostDetailActivity.EXTRA_POST, data)
+                startActivity(intent)
+            }
+        })
+
 
         viewModel.loading.observe(viewLifecycleOwner) {
             binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
