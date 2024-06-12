@@ -3,4 +3,7 @@
     <string name="no_error">No image selected</string>
     <string name="cant_classify_image">Failed to classify image</string>
     <string name="no_image_found">No image found</string>
+    <string name="gallery">Gallery</string>
+    <string name="scan">Scan</string>
+    <string name="camera">Camera</string>
 </resources>
