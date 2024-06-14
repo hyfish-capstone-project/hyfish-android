@@ -65,7 +65,10 @@ class HomeViewModel(
         viewModelScope.launch {
             try {
                 val result = scanRepo.getCaptures()
-                _captures.postValue(result.data)
+                val sorted = result.data
+                    .sortedByDescending { it.createdAt }
+                    .take(5)
+                _captures.postValue(sorted)
                 _loading.postValue(false)
             } catch (e: HttpException) {
                 val jsonInString = e.response()?.errorBody()?.string()

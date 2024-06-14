@@ -2,6 +2,7 @@ package com.hyfish.app.di
 
 import android.content.Context
 import com.hyfish.app.data.ArticleRepository
+import com.hyfish.app.data.FishRepository
 import com.hyfish.app.data.ForumRepository
 import com.hyfish.app.data.ScanRepository
 import com.hyfish.app.data.UserRepository
@@ -27,6 +28,11 @@ object Injection {
     fun provideScanRepository(context: Context): ScanRepository {
         val pref = UserPreference.getInstance(context.dataStore)
         return ScanRepository.getInstance(pref)
+    }
+
+    fun provideFishRepository(context: Context): FishRepository {
+        val pref = UserPreference.getInstance(context.dataStore)
+        return FishRepository.getInstance(pref)
     }
 }
 

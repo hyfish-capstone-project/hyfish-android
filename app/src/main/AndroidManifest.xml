@@ -8,6 +8,7 @@
         android:maxSdkVersion="28" />
 
     <uses-feature android:name="android.hardware.camera" />
+
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -21,6 +22,9 @@
         android:theme="@style/Theme.HyFish"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".view.fishes.FishesDetailActivity"
+            android:exported="false" />
         <activity
             android:name=".view.scan.ScanActivity"
             android:exported="false" />
