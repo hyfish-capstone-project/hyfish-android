@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hyfish.app.R
 import com.hyfish.app.data.api.CaptureItem
@@ -13,19 +14,26 @@ import com.hyfish.app.databinding.FragmentHomeBinding
 import com.hyfish.app.view.ViewModelFactory
 import com.hyfish.app.view.login.LoginActivity
 import com.hyfish.app.view.scan.ScanActivity
+import com.hyfish.app.view.scan.ScanResultActivity
 
 class HomeFragment : Fragment() {
+    private val viewModel by viewModels<HomeViewModel> {
+        ViewModelFactory.getInstance(requireActivity())
+    }
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    fun getData() {
+        viewModel.getArticles()
+        viewModel.getCaptures()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val viewModel = ViewModelFactory.getInstance(requireActivity()).create(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -35,7 +43,7 @@ class HomeFragment : Fragment() {
                 activity?.finish()
             } else {
                 binding.tvGreetings.text = getString(R.string.main_greetings, user.username)
-                viewModel.getArticles()
+                getData()
             }
         }
 
@@ -52,20 +60,17 @@ class HomeFragment : Fragment() {
         binding.rvCaptures.layoutManager = LinearLayoutManager(activity)
         val captureAdapter = CaptureAdapter()
         binding.rvCaptures.adapter = captureAdapter
+        captureAdapter.setOnItemClickCallback(object : CaptureAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: CaptureItem) {
+                val intent = Intent(activity, ScanResultActivity::class.java)
+                intent.putExtra(ScanResultActivity.EXTRA_CAPTURE, data)
+                startActivity(intent)
+            }
+        })
 
-        val dummyCaptures = mutableListOf<CaptureItem>()
-        for (i in 0..10) {
-            dummyCaptures.add(
-                CaptureItem(
-                    image = "https://picsum.photos/200/300",
-                    result = "Result $i",
-                    createdAt = "2021-08-01 12:00:00",
-                    id = i,
-                    rate = 99
-                )
-            )
+        viewModel.captures.observe(viewLifecycleOwner) { captures ->
+            captureAdapter.submitList(captures)
         }
-        captureAdapter.submitList(dummyCaptures)
 
         binding.fabCreateScan.setOnClickListener {
             val intent = Intent(activity, ScanActivity::class.java)
@@ -77,6 +82,11 @@ class HomeFragment : Fragment() {
         }
 
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getData()
     }
 
     override fun onDestroyView() {

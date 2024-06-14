@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.hyfish.app.data.ArticleRepository
 import com.hyfish.app.data.ForumRepository
+import com.hyfish.app.data.ScanRepository
 import com.hyfish.app.data.UserRepository
 import com.hyfish.app.di.Injection
 import com.hyfish.app.view.forum.ForumViewModel
@@ -12,11 +13,13 @@ import com.hyfish.app.view.forum.post.PostAddViewModel
 import com.hyfish.app.view.home.HomeViewModel
 import com.hyfish.app.view.login.LoginViewModel
 import com.hyfish.app.view.register.RegisterViewModel
+import com.hyfish.app.view.scan.ScanViewModel
 
 class ViewModelFactory(
     private val userRepo: UserRepository,
     private val articleRepo: ArticleRepository,
     private val forumRepo: ForumRepository,
+    private val scanRepo: ScanRepository,
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -29,13 +32,16 @@ class ViewModelFactory(
                 LoginViewModel(userRepo) as T
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
-                HomeViewModel(userRepo, articleRepo) as T
+                HomeViewModel(userRepo, articleRepo, scanRepo) as T
             }
             modelClass.isAssignableFrom(ForumViewModel::class.java) -> {
                 ForumViewModel(forumRepo) as T
             }
             modelClass.isAssignableFrom(PostAddViewModel::class.java) -> {
                 PostAddViewModel(forumRepo) as T
+            }
+            modelClass.isAssignableFrom(ScanViewModel::class.java) -> {
+                ScanViewModel(scanRepo) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
@@ -52,6 +58,7 @@ class ViewModelFactory(
                         Injection.provideUserRepository(context),
                         Injection.provideArticleRepository(context),
                         Injection.provideForumRepository(context),
+                        Injection.provideScanRepository(context),
                     )
                 }
             }

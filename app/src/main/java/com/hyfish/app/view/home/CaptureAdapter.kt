@@ -8,8 +8,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hyfish.app.data.api.CaptureItem
 import com.hyfish.app.databinding.ItemCaptureBinding
+import com.hyfish.app.view.scan.ScanActivity
 
 class CaptureAdapter : ListAdapter<CaptureItem, CaptureAdapter.ItemViewHolder>(DIFF_CALLBACK) {
+    private var onItemClickCallback: OnItemClickCallback? = null
+
+    interface OnItemClickCallback {
+        fun onItemClicked(data: CaptureItem)
+    }
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding = ItemCaptureBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ItemViewHolder(binding)
@@ -18,31 +29,31 @@ class CaptureAdapter : ListAdapter<CaptureItem, CaptureAdapter.ItemViewHolder>(D
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val data = getItem(position)
         if (data != null) holder.bind(data)
+        if (onItemClickCallback != null) {
+            holder.itemView.setOnClickListener {
+                onItemClickCallback?.onItemClicked(data)
+            }
+        }
     }
 
     class ItemViewHolder(private val binding: ItemCaptureBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CaptureItem){
             Glide.with(binding.root.context)
-                .load(item.image)
+                .load(item.imageUrl)
                 .into(binding.ivItemPhoto)
-            binding.tvItemTitle.text = item.result
-            binding.tvItemDescription.text = item.result
-            binding.tvItemDatetime.text = item.createdAt
-
-            itemView.setOnClickListener {
-//                val intent = Intent(itemView.context, DetailActivity::class.java)
-//                intent.putExtra(DetailActivity.EXTRA_ARTICLE, item)
-
-//                val optionsCompat: ActivityOptionsCompat =
-//                    ActivityOptionsCompat.makeSceneTransitionAnimation(
-//                        itemView.context as Activity,
-//                        Pair(binding.ivItemPhoto, "photo"),
-//                        Pair(binding.tvItemTitle, "title"),
-//                        Pair(binding.tvItemDescription, "desc"),
-//                    )
-
-//                startActivity(itemView.context, intent, optionsCompat.toBundle())
+            when (item.type) {
+                ScanActivity.ScanType.FRESHNESS.value -> {
+                    binding.tvItemTitle.text = item.freshness
+                }
+                ScanActivity.ScanType.CLASSIFICATION.value -> {
+                    binding.tvItemTitle.text = item.fishId.toString()
+                }
+                else -> {
+                    throw IllegalArgumentException("Unknown scan type")
+                }
             }
+            binding.tvItemDescription.text = item.type
+            binding.tvItemDatetime.text = item.createdAt
         }
     }
 
