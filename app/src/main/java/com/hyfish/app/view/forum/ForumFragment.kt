@@ -1,10 +1,12 @@
 package com.hyfish.app.view.forum
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,12 +25,15 @@ class ForumFragment : Fragment() {
         ViewModelFactory.getInstance(requireActivity())
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-//        val viewModel = ViewModelFactory.getInstance(requireActivity()).create(ForumViewModel::class.java)
+    private val addPostLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            viewModel.getForums() // Refresh data
+        }
+    }
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentForumBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -43,7 +48,6 @@ class ForumFragment : Fragment() {
             }
         })
 
-
         viewModel.loading.observe(viewLifecycleOwner) {
             binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
         }
@@ -54,18 +58,17 @@ class ForumFragment : Fragment() {
 
         binding.fabCreatePost.setOnClickListener {
             val intent = Intent(activity, PostAddActivity::class.java)
-            startActivity(intent)
+            addPostLauncher.launch(intent)
         }
-
-        viewModel.getForums()
 
         return root
     }
 
-    //    TODO: cari pengganti onResume buat refresh data, soalnya kalo gini tiap kali balik ke fragment ini data di load ulang
-    override fun onResume() {
-        super.onResume()
-        viewModel.getForums()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (viewModel.forums.value.isNullOrEmpty()) {
+            viewModel.getForums()
+        }
     }
 
     override fun onDestroyView() {
