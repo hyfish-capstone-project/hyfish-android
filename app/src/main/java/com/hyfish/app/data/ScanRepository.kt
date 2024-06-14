@@ -1,6 +1,7 @@
 package com.hyfish.app.data
 
 import com.hyfish.app.data.api.ApiConfig
+import com.hyfish.app.data.api.CaptureResponse
 import com.hyfish.app.data.api.PostCaptureResponse
 import com.hyfish.app.data.pref.UserPreference
 import kotlinx.coroutines.flow.first
@@ -18,6 +19,12 @@ class ScanRepository private constructor(
         val user = runBlocking { userPreference.getSession().first() }
         val apiService = ApiConfig.getApiService(user.token)
         return apiService.createCapture(type, image)
+    }
+
+    suspend fun getCaptures(): CaptureResponse {
+        val user = runBlocking { userPreference.getSession().first() }
+        val apiService = ApiConfig.getApiService(user.token)
+        return apiService.getCaptures()
     }
 
     companion object {
