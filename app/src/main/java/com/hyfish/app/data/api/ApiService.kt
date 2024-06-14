@@ -51,4 +51,7 @@ interface ApiService {
         @Part("type") type: RequestBody,
         @Part image: MultipartBody.Part
     ): PostCaptureResponse
+
+    @GET("fishes")
+    suspend fun getFishes(): FishResponse
 }

@@ -20,4 +20,8 @@
         android:id="@+id/navigation_history"
         android:name="com.hyfish.app.view.history.HistoryFragment"
         android:label="@string/title_history" />
+    <fragment
+        android:id="@+id/navigation_fishes"
+        android:name="com.hyfish.app.view.fishes.FishesFragment"
+        android:label="@string/title_fishes" />
 </navigation>

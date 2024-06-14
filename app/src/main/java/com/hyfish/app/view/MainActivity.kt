@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             R.id.navigation_home,
             R.id.navigation_forum,
             R.id.navigation_history,
-            R.id.navigation_forum
+            R.id.navigation_fishes
         )
         val appBarConfiguration = AppBarConfiguration(
             tabIDs
@@ -41,7 +41,11 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         viewModel.selectedTab.observe(this) {
-            navView.selectedItemId = tabIDs.elementAt(it)
+            if (it >= 0 && it < tabIDs.size) {
+                navView.selectedItemId = tabIDs.elementAt(it)
+            } else {
+                navView.selectedItemId = R.id.navigation_home
+            }
         }
     }
 }
