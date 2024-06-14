@@ -62,6 +62,7 @@ class ForumFragment : Fragment() {
         return root
     }
 
+    //    TODO: cari pengganti onResume buat refresh data, soalnya kalo gini tiap kali balik ke fragment ini data di load ulang
     override fun onResume() {
         super.onResume()
         viewModel.getForums()

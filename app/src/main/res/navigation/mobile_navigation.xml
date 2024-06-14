@@ -16,4 +16,8 @@
         android:name="com.hyfish.app.view.forum.ForumFragment"
         android:label="@string/title_forum"
         tools:layout="@layout/fragment_forum" />
+    <fragment
+        android:id="@+id/navigation_history"
+        android:name="com.hyfish.app.view.history.HistoryFragment"
+        android:label="@string/title_history" />
 </navigation>

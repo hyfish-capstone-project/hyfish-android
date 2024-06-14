@@ -10,6 +10,7 @@ import com.hyfish.app.data.UserRepository
 import com.hyfish.app.di.Injection
 import com.hyfish.app.view.forum.ForumViewModel
 import com.hyfish.app.view.forum.post.PostAddViewModel
+import com.hyfish.app.view.history.HistoryViewModel
 import com.hyfish.app.view.home.HomeViewModel
 import com.hyfish.app.view.login.LoginViewModel
 import com.hyfish.app.view.register.RegisterViewModel
@@ -42,6 +43,9 @@ class ViewModelFactory(
             }
             modelClass.isAssignableFrom(ScanViewModel::class.java) -> {
                 ScanViewModel(scanRepo) as T
+            }
+            modelClass.isAssignableFrom(HistoryViewModel::class.java) -> {
+                HistoryViewModel(scanRepo) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
