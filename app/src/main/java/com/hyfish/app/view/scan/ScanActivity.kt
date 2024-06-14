@@ -6,17 +6,31 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.hyfish.app.R
 import com.hyfish.app.databinding.ActivityScanBinding
 import com.hyfish.app.util.getImageUri
+import com.hyfish.app.util.reduceFileImage
+import com.hyfish.app.util.uriToFile
+import com.hyfish.app.view.ViewModelFactory
 
 class ScanActivity : AppCompatActivity() {
+    private val viewModel by viewModels<ScanViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
+
+    enum class ScanType(val value: String) {
+        FRESHNESS("freshness"),
+        CLASSIFICATION("classification"),
+    }
+
     private var currentImageUri: Uri? = null
 
     private lateinit var binding: ActivityScanBinding
@@ -38,18 +52,16 @@ class ScanActivity : AppCompatActivity() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) {
-            Toast.makeText(
-                this, "Permission request granted", Toast.LENGTH_LONG
-            ).show()
+            startCamera()
         } else {
-            Toast.makeText(
-                this, "Permission request denied", Toast.LENGTH_LONG
-            ).show()
+            showToast(getString(R.string.no_permission))
         }
     }
 
     private val launchCamera =
-        registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccessful ->
+        registerForActivityResult(
+            ActivityResultContracts.TakePicture()
+        ) { isSuccessful ->
             if (isSuccessful) {
                 currentImageUri?.let {
                     Log.d(TAG, "Selected image: $it")
@@ -58,11 +70,45 @@ class ScanActivity : AppCompatActivity() {
             }
         }
 
+    private fun permissionGranted() = ContextCompat.checkSelfPermission(
+        this, PERMISSION
+    ) == PackageManager.PERMISSION_GRANTED
+
+    private fun startCamera() {
+        if (!permissionGranted()) {
+            requestPermission.launch(Manifest.permission.CAMERA)
+        } else {
+            currentImageUri = getImageUri(this)
+            launchCamera.launch(currentImageUri!!)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityScanBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportActionBar?.title = getString(R.string.title_scan)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        viewModel.loading.observe(this) {
+            binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
+        }
+
+        viewModel.error.observe(this) {
+            it.getContentIfNotHandled()?.let { message ->
+                showToast(message)
+            }
+        }
+
+        viewModel.captureItem.observe(this) { captureItem ->
+            Log.d("captureItem", "Capture item: $captureItem")
+            val intent = Intent(this, ScanResultActivity::class.java)
+            intent.putExtra(ScanResultActivity.EXTRA_CAPTURE, captureItem)
+            startActivity(intent)
+            finish()
+        }
 
         binding.galleryButton.setOnClickListener {
             launchGallery.launch(
@@ -70,33 +116,40 @@ class ScanActivity : AppCompatActivity() {
             )
         }
 
-        binding.scanButton.setOnClickListener {
-            if (currentImageUri != null) {
-                val intent = Intent(this, ScanResultActivity::class.java)
-                intent.putExtra(ScanResultActivity.EXTRA, currentImageUri.toString())
-                startActivity(intent)
-            } else {
-                showToast(getString(R.string.no_image_found))
-            }
+        binding.cameraButton.setOnClickListener {
+            startCamera()
         }
 
-        binding.cameraButton.setOnClickListener {
-            if (!permissionGranted()) {
-                requestPermission.launch(PERMISSION)
-            } else {
-                currentImageUri = getImageUri(this)
-                launchCamera.launch(currentImageUri!!)
+        binding.freshnessButton.setOnClickListener {
+            uploadImage(ScanType.FRESHNESS)
+        }
+
+        binding.classificationButton.setOnClickListener {
+            uploadImage(ScanType.CLASSIFICATION)
+        }
+    }
+
+    private fun uploadImage(type: ScanType) {
+        if (currentImageUri != null) {
+            currentImageUri?.let { uri ->
+                val typeStr = type.value
+                val imageFile = uriToFile(uri, this).reduceFileImage()
+
+                viewModel.uploadScan(typeStr, imageFile)
             }
+        } else {
+            showToast(getString(R.string.no_image_found))
         }
     }
 
     private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
-    private fun permissionGranted() = ContextCompat.checkSelfPermission(
-        this, PERMISSION
-    ) == PackageManager.PERMISSION_GRANTED
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
+    }
 
     companion object {
         private const val TAG = "ImageURI"

@@ -1,20 +1,18 @@
 package com.hyfish.app.data.api
 
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class CaptureResponse(
-	val data: CaptureItem,
-	val message: String,
-	val status: Boolean
-) : Parcelable
 
-@Parcelize
-data class CaptureItem(
-	val result: String,
-	val image: String,
-	val createdAt: String,
-	val rate: Int,
-	val id: Int
+	@field:SerializedName("data")
+	val data: List<CaptureItem>,
+
+	@field:SerializedName("message")
+	val message: String,
+
+	@field:SerializedName("status")
+	val status: Boolean
 ) : Parcelable

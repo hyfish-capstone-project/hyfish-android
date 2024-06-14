@@ -54,14 +54,29 @@ class HomeFragment : Fragment() {
         binding.rvCaptures.adapter = captureAdapter
 
         val dummyCaptures = mutableListOf<CaptureItem>()
-        for (i in 0..10) {
+        for (i in 0..5) {
             dummyCaptures.add(
                 CaptureItem(
-                    image = "https://picsum.photos/200/300",
-                    result = "Result $i",
+                    imageUrl = "https://picsum.photos/200/300",
+                    type = "freshness",
+                    freshness = "Fresh $i",
                     createdAt = "2021-08-01 12:00:00",
                     id = i,
-                    rate = 99
+                    score = 0.99,
+                    userId = 1,
+                    updatedAt = "2021-08-01 12:00:00",
+                )
+            )
+            dummyCaptures.add(
+                CaptureItem(
+                    imageUrl = "https://picsum.photos/200/300",
+                    type = "classification",
+                    fishId = i,
+                    createdAt = "2021-08-01 12:00:00",
+                    id = i,
+                    score = 0.99,
+                    userId = 1,
+                    updatedAt = "2021-08-01 12:00:00",
                 )
             )
         }

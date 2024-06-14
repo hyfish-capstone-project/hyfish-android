@@ -69,7 +69,6 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.btSubmit.setOnClickListener {
-
             val username = binding.inUsername.text
             val password = binding.inPassword.text
 

@@ -59,4 +59,10 @@
     <string name="gallery">Gallery</string>
     <string name="scan">Scan</string>
     <string name="camera">Camera</string>
+
+    <string name="title_scan">New Scan</string>
+    <string name="no_permission">Hyfish needs camera permission to scan image</string>
+
+    <string name="freshness">Scan Freshness</string>
+    <string name="classification">Scan Classification</string>
 </resources>

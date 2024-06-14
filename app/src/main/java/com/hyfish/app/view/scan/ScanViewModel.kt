@@ -1,51 +1,60 @@
-package com.hyfish.app.view.login
+package com.hyfish.app.view.scan
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
-import com.hyfish.app.data.UserRepository
+import com.hyfish.app.data.ScanRepository
+import com.hyfish.app.data.api.CaptureItem
 import com.hyfish.app.data.api.ErrorResponse
-import com.hyfish.app.data.api.auth.LoginData
-import com.hyfish.app.data.api.auth.LoginRequest
-import com.hyfish.app.data.pref.UserModel
 import com.hyfish.app.util.EventOnce
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
+import java.io.File
 
-class LoginViewModel(private val repository: UserRepository) : ViewModel() {
+class ScanViewModel(
+    private val scanRepo: ScanRepository
+) : ViewModel() {
+
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
 
     private val _error = MutableLiveData<EventOnce<String>>()
     val error: LiveData<EventOnce<String>> = _error
 
-    private val _user = MutableLiveData<LoginData>()
-    val user: LiveData<LoginData> = _user
+    private val _captureItem = MutableLiveData<CaptureItem>()
+    val captureItem: LiveData<CaptureItem> = _captureItem
 
-    fun saveSession(user: UserModel) {
-        viewModelScope.launch {
-            repository.saveSession(user)
-        }
-    }
-
-    fun login(data: LoginRequest) {
+    fun uploadScan(type: String, image: File) {
         _loading.value = true
         viewModelScope.launch {
             try {
-                val response = repository.login(data)
+                val requestImageFile = image.asRequestBody("image/jpeg".toMediaType())
+                val imagePart = MultipartBody.Part.createFormData(
+                    "image",
+                    image.name,
+                    requestImageFile
+                )
+
+                val rbType = type.toRequestBody("text/plain".toMediaType())
+
+                val result = scanRepo.uploadScan(rbType, imagePart)
+                _captureItem.postValue(result.data)
                 _loading.postValue(false)
-                _user.postValue(response.data)
             } catch (e: HttpException) {
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
                 val errorMessage = errorBody.message
-                _loading.postValue(false)
                 _error.postValue(EventOnce(errorMessage ?: "Something went wrong"))
-            } catch (e: Throwable) {
                 _loading.postValue(false)
+            } catch (e: Exception) {
                 _error.postValue(EventOnce(e.message ?: "Something went wrong"))
+                _loading.postValue(false)
             }
         }
     }

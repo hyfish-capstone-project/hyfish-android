@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hyfish.app.data.api.CaptureItem
 import com.hyfish.app.databinding.ItemCaptureBinding
+import com.hyfish.app.view.scan.ScanActivity
 
 class CaptureAdapter : ListAdapter<CaptureItem, CaptureAdapter.ItemViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -23,10 +24,20 @@ class CaptureAdapter : ListAdapter<CaptureItem, CaptureAdapter.ItemViewHolder>(D
     class ItemViewHolder(private val binding: ItemCaptureBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CaptureItem){
             Glide.with(binding.root.context)
-                .load(item.image)
+                .load(item.imageUrl)
                 .into(binding.ivItemPhoto)
-            binding.tvItemTitle.text = item.result
-            binding.tvItemDescription.text = item.result
+            when (item.type) {
+                ScanActivity.ScanType.FRESHNESS.value -> {
+                    binding.tvItemTitle.text = item.freshness
+                }
+                ScanActivity.ScanType.CLASSIFICATION.value -> {
+                    binding.tvItemTitle.text = item.fishId.toString()
+                }
+                else -> {
+                    throw IllegalArgumentException("Unknown scan type")
+                }
+            }
+//            binding.tvItemDescription.text = item.result
             binding.tvItemDatetime.text = item.createdAt
 
             itemView.setOnClickListener {

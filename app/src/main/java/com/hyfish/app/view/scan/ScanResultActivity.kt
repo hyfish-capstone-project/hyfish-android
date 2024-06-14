@@ -77,6 +77,7 @@ class ScanResultActivity : AppCompatActivity() {
     }
 
     companion object {
+        const val EXTRA_CAPTURE = "extra_capture"
         const val EXTRA = "extra_uri"
         private const val TAG = "ImagePicker"
     }

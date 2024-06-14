@@ -41,4 +41,14 @@ interface ApiService {
         @Part("tags[]") tags: List<String>,
         @Part images: List<MultipartBody.Part>
     ): CreatePostResponse
+
+    @GET("captures")
+    suspend fun getCaptures(): CaptureResponse
+
+    @POST("captures")
+    @Multipart
+    suspend fun createCapture(
+        @Part("type") type: RequestBody,
+        @Part image: MultipartBody.Part
+    ): PostCaptureResponse
 }
