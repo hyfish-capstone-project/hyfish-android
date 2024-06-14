@@ -11,6 +11,7 @@ import com.hyfish.app.R
 import com.hyfish.app.data.api.PostItem
 import com.hyfish.app.databinding.ActivityPostDetailBinding
 
+@Suppress("DEPRECATION")
 class PostDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPostDetailBinding
 
@@ -32,17 +33,17 @@ class PostDetailActivity : AppCompatActivity() {
         if (post != null) {
             if (post.images.isNotEmpty()) {
                 binding.ivItemPhoto.visibility = View.VISIBLE
-                Glide.with(binding.root.context)
-                    .load(post.images[0])
-                    .into(binding.ivItemPhoto)
+                Glide.with(binding.root.context).load(post.images[0]).into(binding.ivItemPhoto)
             } else {
                 binding.ivItemPhoto.visibility = View.GONE
             }
 
             binding.tvItemUsername.text = post.title
             binding.tvItemBody.text = post.body
-            binding.tvItemLikes.text = binding.root.context.getString(R.string.item_likes, post.likes)
-            binding.tvItemComments.text = binding.root.context.getString(R.string.item_comments, post.comments.size)
+            binding.tvItemLikes.text =
+                binding.root.context.getString(R.string.item_likes, post.likes)
+            binding.tvItemComments.text =
+                binding.root.context.getString(R.string.item_comments, post.comments.size)
         }
     }
 

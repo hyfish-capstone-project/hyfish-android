@@ -1,5 +1,6 @@
 package com.hyfish.app.view.forum.post
 
+import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -45,6 +46,8 @@ class PostAddActivity : AppCompatActivity() {
 
         viewModel.status.observe(this) {
             if (it) {
+                // Set result and finish activity
+                setResult(Activity.RESULT_OK)
                 finish()
             }
         }

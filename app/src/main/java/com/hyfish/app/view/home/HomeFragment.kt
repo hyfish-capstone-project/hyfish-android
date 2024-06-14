@@ -33,9 +33,7 @@ class HomeFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -92,9 +90,11 @@ class HomeFragment : Fragment() {
     }
 
     //    TODO: cari pengganti onResume buat refresh data, soalnya kalo gini tiap kali balik ke fragment ini data di load ulang
-    override fun onResume() {
-        super.onResume()
-        getData()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (viewModel.articles.value.isNullOrEmpty() || viewModel.captures.value.isNullOrEmpty()) {
+            getData()
+        }
     }
 
     override fun onDestroyView() {
