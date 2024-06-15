@@ -25,6 +25,8 @@ class HistoryFragment : Fragment() {
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
 
+    private var currentCaptures: List<CaptureItem>? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -34,10 +36,6 @@ class HistoryFragment : Fragment() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
-        }
-
-        viewModel.loading.observe(viewLifecycleOwner) {
-            binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
         }
 
         binding.rvCaptures.layoutManager = LinearLayoutManager(activity)
@@ -51,12 +49,6 @@ class HistoryFragment : Fragment() {
             }
         })
 
-        viewModel.captures.observe(viewLifecycleOwner) { captures ->
-            captureAdapter.submitList(captures)
-        }
-
-        viewModel.getCaptures()
-
         binding.fabCreateScan.setOnClickListener {
             val intent = Intent(activity, ScanActivity::class.java)
             startActivity(intent)
@@ -65,10 +57,27 @@ class HistoryFragment : Fragment() {
         return root
     }
 
-    //    TODO: cari pengganti onResume buat refresh data, soalnya kalo gini tiap kali balik ke fragment ini data di load ulang
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.loading.observe(viewLifecycleOwner) {
+            binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
+        }
+
+        viewModel.captures.observe(viewLifecycleOwner) { captures ->
+            (binding.rvCaptures.adapter as CaptureAdapter).submitList(captures)
+            currentCaptures = captures // Update currentCaptures when data changes
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        viewModel.getCaptures()
+        // Check if the data has changed
+        viewModel.captures.value?.let { newCaptures ->
+            if (newCaptures != currentCaptures) {
+                viewModel.getCaptures()
+            }
+        }
     }
 
     override fun onDestroyView() {

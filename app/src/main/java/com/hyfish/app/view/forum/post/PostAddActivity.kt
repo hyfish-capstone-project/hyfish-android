@@ -44,8 +44,8 @@ class PostAddActivity : AppCompatActivity() {
             binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
         }
 
-        viewModel.status.observe(this) {
-            if (it) {
+        viewModel.status.observe(this) { success ->
+            if (success) {
                 // Set result and finish activity
                 setResult(Activity.RESULT_OK)
                 finish()
