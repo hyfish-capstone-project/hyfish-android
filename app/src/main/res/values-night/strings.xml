@@ -6,4 +6,5 @@
     <string name="gallery">Gallery</string>
     <string name="scan">Scan</string>
     <string name="camera">Camera</string>
+    <string name="empty_list">Empty List</string>
 </resources>

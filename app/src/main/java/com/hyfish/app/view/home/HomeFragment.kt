@@ -60,6 +60,7 @@ class HomeFragment : Fragment() {
 
         viewModel.articles.observe(viewLifecycleOwner) { articles ->
             articleAdapter.submitList(articles)
+            binding.emptyText.visibility = if (articles.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
 
         binding.rvCaptures.layoutManager = LinearLayoutManager(activity)
@@ -75,6 +76,8 @@ class HomeFragment : Fragment() {
 
         historyViewModel.capturesWithFishes.observe(viewLifecycleOwner) { capturesWithFishes ->
             captureAdapter.submitList(capturesWithFishes)
+            binding.emptyText.visibility =
+                if (capturesWithFishes.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
 
         binding.tvSeallCaptures.setOnClickListener {
