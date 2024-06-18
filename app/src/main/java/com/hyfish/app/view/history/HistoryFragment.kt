@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.hyfish.app.data.api.CaptureItem
+import com.hyfish.app.data.api.CaptureItemWithFish
 import com.hyfish.app.databinding.FragmentHistoryBinding
 import com.hyfish.app.view.ViewModelFactory
 import com.hyfish.app.view.home.CaptureAdapter
@@ -24,8 +24,6 @@ class HistoryFragment : Fragment() {
 
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
-
-    private var currentCaptures: List<CaptureItem>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -42,7 +40,7 @@ class HistoryFragment : Fragment() {
         val captureAdapter = CaptureAdapter()
         binding.rvCaptures.adapter = captureAdapter
         captureAdapter.setOnItemClickCallback(object : CaptureAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: CaptureItem) {
+            override fun onItemClicked(data: CaptureItemWithFish) {
                 val intent = Intent(activity, ScanResultActivity::class.java)
                 intent.putExtra(ScanResultActivity.EXTRA_CAPTURE, data)
                 startActivity(intent)
@@ -54,30 +52,25 @@ class HistoryFragment : Fragment() {
             startActivity(intent)
         }
 
-        return root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         viewModel.loading.observe(viewLifecycleOwner) {
             binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
         }
 
-        viewModel.captures.observe(viewLifecycleOwner) { captures ->
-            (binding.rvCaptures.adapter as CaptureAdapter).submitList(captures)
-            currentCaptures = captures // Update currentCaptures when data changes
+        viewModel.capturesWithFishes.observe(viewLifecycleOwner) { capturesWithFishes ->
+            captureAdapter.submitList(capturesWithFishes)
         }
 
-        if (viewModel.captures.value.isNullOrEmpty()) {
-            viewModel.getCaptures()
+        if (viewModel.capturesWithFishes.value.isNullOrEmpty()) {
+            viewModel.getCapturesWithFishes()
         }
+
+        return root
     }
 
     override fun onResume() {
         super.onResume()
 //        karena scan ke activity lain, yang pake launcher gabisa
-        viewModel.getCaptures()
+        viewModel.getCapturesWithFishes()
     }
 
     override fun onDestroyView() {

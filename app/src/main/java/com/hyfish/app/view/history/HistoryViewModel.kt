@@ -1,43 +1,51 @@
 package com.hyfish.app.view.history
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
+import com.hyfish.app.data.FishRepository
 import com.hyfish.app.data.ScanRepository
-import com.hyfish.app.data.api.CaptureItem
-import com.hyfish.app.data.api.ErrorResponse
+import com.hyfish.app.data.api.CaptureItemWithFish
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
 class HistoryViewModel(
     private val scanRepo: ScanRepository,
+    private val fishRepo: FishRepository,
 ) : ViewModel() {
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
 
-    private val _captures = MutableLiveData<List<CaptureItem>>()
-    val captures: LiveData<List<CaptureItem>> = _captures
+    private val _capturesWithFishes = MutableLiveData<List<CaptureItemWithFish>>()
+    val capturesWithFishes: LiveData<List<CaptureItemWithFish>> = _capturesWithFishes
 
-    fun getCaptures() {
-        _loading.value = true
+    fun getCapturesWithFishes() {
+        _loading.postValue(true)
         viewModelScope.launch {
-            try {
-                val result = scanRepo.getCaptures()
-                val sorted = result.data
-                    .sortedByDescending { it.createdAt }
-                _captures.postValue(sorted)
-                _loading.postValue(false)
-            } catch (e: HttpException) {
-                val jsonInString = e.response()?.errorBody()?.string()
-                val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
-                val errorMessage = errorBody.message
-//                _message.postValue(Event(errorMessage ?: "An error occurred"))
-                _loading.postValue(false)
-            } catch (e: Exception) {
-                _loading.postValue(false)
+            val captures = scanRepo.getCaptures().data
+            val fishes = fishRepo.getFishes().data
+
+            val capturesWithFish = captures.map { capture ->
+                val fish = fishes.find { it.id == capture.fishId }
+                return@map CaptureItemWithFish(
+                    id = capture.id,
+                    fishId = capture.fishId,
+                    imageUrl = capture.imageUrl,
+                    freshness = capture.freshness,
+                    score = capture.score,
+                    userId = capture.userId,
+                    updatedAt = capture.updatedAt,
+                    createdAt = capture.createdAt,
+                    type = capture.type,
+                    fish = fish
+                )
             }
+
+            Log.d("HistoryViewModel", "captures: $capturesWithFish")
+
+            _loading.postValue(false)
+            _capturesWithFishes.postValue(capturesWithFish)
         }
     }
 }

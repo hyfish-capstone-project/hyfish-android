@@ -1,6 +1,7 @@
 package com.hyfish.app.data
 
 import com.hyfish.app.data.api.ApiConfig
+import com.hyfish.app.data.api.FishItem
 import com.hyfish.app.data.api.FishResponse
 import com.hyfish.app.data.pref.UserPreference
 import kotlinx.coroutines.flow.first

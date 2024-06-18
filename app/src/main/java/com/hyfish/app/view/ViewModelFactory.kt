@@ -45,10 +45,10 @@ class ViewModelFactory(
                 PostAddViewModel(forumRepo) as T
             }
             modelClass.isAssignableFrom(ScanViewModel::class.java) -> {
-                ScanViewModel(scanRepo) as T
+                ScanViewModel(scanRepo, fishRepo) as T
             }
             modelClass.isAssignableFrom(HistoryViewModel::class.java) -> {
-                HistoryViewModel(scanRepo) as T
+                HistoryViewModel(scanRepo, fishRepo) as T
             }
             modelClass.isAssignableFrom(FishesViewModel::class.java) -> {
                 FishesViewModel(fishRepo) as T

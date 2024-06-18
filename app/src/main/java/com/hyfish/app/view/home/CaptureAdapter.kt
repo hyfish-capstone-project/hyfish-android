@@ -6,15 +6,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.hyfish.app.data.api.CaptureItem
+import com.hyfish.app.data.api.CaptureItemWithFish
 import com.hyfish.app.databinding.ItemCaptureBinding
 import com.hyfish.app.view.scan.ScanActivity
 
-class CaptureAdapter : ListAdapter<CaptureItem, CaptureAdapter.ItemViewHolder>(DIFF_CALLBACK) {
+class CaptureAdapter : ListAdapter<CaptureItemWithFish, CaptureAdapter.ItemViewHolder>(DIFF_CALLBACK) {
     private var onItemClickCallback: OnItemClickCallback? = null
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: CaptureItem)
+        fun onItemClicked(data: CaptureItemWithFish)
     }
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
@@ -37,7 +37,7 @@ class CaptureAdapter : ListAdapter<CaptureItem, CaptureAdapter.ItemViewHolder>(D
     }
 
     class ItemViewHolder(private val binding: ItemCaptureBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: CaptureItem){
+        fun bind(item: CaptureItemWithFish){
             Glide.with(binding.root.context)
                 .load(item.imageUrl)
                 .into(binding.ivItemPhoto)
@@ -46,7 +46,7 @@ class CaptureAdapter : ListAdapter<CaptureItem, CaptureAdapter.ItemViewHolder>(D
                     binding.tvItemTitle.text = item.freshness
                 }
                 ScanActivity.ScanType.CLASSIFICATION.value -> {
-                    binding.tvItemTitle.text = item.fishId.toString()
+                    binding.tvItemTitle.text = item.fish?.name ?: "Unknown"
                 }
                 else -> {
                     throw IllegalArgumentException("Unknown scan type")
@@ -58,11 +58,11 @@ class CaptureAdapter : ListAdapter<CaptureItem, CaptureAdapter.ItemViewHolder>(D
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<CaptureItem>() {
-            override fun areItemsTheSame(oldItem: CaptureItem, newItem: CaptureItem): Boolean {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<CaptureItemWithFish>() {
+            override fun areItemsTheSame(oldItem: CaptureItemWithFish, newItem: CaptureItemWithFish): Boolean {
                 return oldItem == newItem
             }
-            override fun areContentsTheSame(oldItem: CaptureItem, newItem: CaptureItem): Boolean {
+            override fun areContentsTheSame(oldItem: CaptureItemWithFish, newItem: CaptureItemWithFish): Boolean {
                 return oldItem == newItem
             }
         }
