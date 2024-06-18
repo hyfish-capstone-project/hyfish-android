@@ -47,7 +47,7 @@ class ScanViewModel(
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
                 val errorMessage = errorBody.message
-                _error.postValue(EventOnce(errorMessage ?: "Something went wrong"))
+                _error.postValue(EventOnce(errorMessage))
             } catch (e: Exception) {
                 _error.postValue(EventOnce(e.message ?: "Something went wrong"))
             }
@@ -74,7 +74,7 @@ class ScanViewModel(
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
                 val errorMessage = errorBody.message
-                _error.postValue(EventOnce(errorMessage ?: "Something went wrong"))
+                _error.postValue(EventOnce(errorMessage))
                 _loading.postValue(false)
             } catch (e: Exception) {
                 _error.postValue(EventOnce(e.message ?: "Something went wrong"))

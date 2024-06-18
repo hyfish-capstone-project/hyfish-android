@@ -31,11 +31,6 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private fun getData() {
-        viewModel.getArticles()
-        historyViewModel.getCapturesWithFishes()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -47,9 +42,18 @@ class HomeFragment : Fragment() {
                 startActivity(Intent(activity, LoginActivity::class.java))
                 activity?.finish()
             } else {
-                binding.tvGreetings.text = getString(R.string.main_greetings, user.username)
-                getData()
+                binding.tvGreetings.text = getString(R.string.main_greetings, user.role)
+                viewModel.getArticles()
+                historyViewModel.getCapturesWithFishes()
             }
+        }
+
+        viewModel.loading.observe(viewLifecycleOwner) {
+            binding.progressIndicatorA.visibility = if (it) View.VISIBLE else View.GONE
+        }
+
+        historyViewModel.loading.observe(viewLifecycleOwner) {
+            binding.progressIndicatorRC.visibility = if (it) View.VISIBLE else View.GONE
         }
 
         binding.rvArticles.layoutManager = LinearLayoutManager(activity).apply {
@@ -60,7 +64,7 @@ class HomeFragment : Fragment() {
 
         viewModel.articles.observe(viewLifecycleOwner) { articles ->
             articleAdapter.submitList(articles)
-            binding.emptyText.visibility = if (articles.isNullOrEmpty()) View.VISIBLE else View.GONE
+            binding.tvEmptyA.visibility = if (articles.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
 
         binding.rvCaptures.layoutManager = LinearLayoutManager(activity)
@@ -75,8 +79,8 @@ class HomeFragment : Fragment() {
         })
 
         historyViewModel.capturesWithFishes.observe(viewLifecycleOwner) { capturesWithFishes ->
-            captureAdapter.submitList(capturesWithFishes)
-            binding.emptyText.visibility =
+            captureAdapter.submitList(capturesWithFishes.take(3))
+            binding.tvEmptyRc.visibility =
                 if (capturesWithFishes.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
 
@@ -98,8 +102,11 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (viewModel.articles.value.isNullOrEmpty() || historyViewModel.capturesWithFishes.value.isNullOrEmpty()) {
-            getData()
+        if (viewModel.articles.value.isNullOrEmpty()) {
+            viewModel.getArticles()
+        }
+        if (historyViewModel.capturesWithFishes.value.isNullOrEmpty()) {
+            historyViewModel.getCapturesWithFishes()
         }
     }
 

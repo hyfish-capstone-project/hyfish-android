@@ -36,7 +36,7 @@ class RegisterViewModel(private val repository: UserRepository) : ViewModel() {
                 val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
                 val errorMessage = errorBody.message
                 _loading.postValue(false)
-                _error.postValue(EventOnce(errorMessage ?: "An error occurred"))
+                _error.postValue(EventOnce(errorMessage))
             }
         }
 

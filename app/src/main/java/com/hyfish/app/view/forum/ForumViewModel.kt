@@ -26,7 +26,7 @@ class ForumViewModel(
         viewModelScope.launch {
             try {
                 val result = forumRepo.getForums()
-                _forums.postValue(result.data)
+                _forums.postValue(result.data.sortedByDescending { it.createdAt })
                 _loading.postValue(false)
             } catch (e: HttpException) {
                 val jsonInString = e.response()?.errorBody()?.string()

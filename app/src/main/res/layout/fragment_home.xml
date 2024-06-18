@@ -96,6 +96,21 @@
 
 
     <TextView
+        android:id="@+id/tv_empty_a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        android:text="@string/empty_list"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/tv_captures"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_articles"
+        tools:ignore="MissingConstraints"
+        tools:visibility="visible" />
+
+    <TextView
         android:id="@+id/tv_captures"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -129,6 +144,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_captures" />
 
+    <TextView
+        android:id="@+id/tv_empty_rc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        android:text="@string/empty_list"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rv_captures"
+        tools:ignore="MissingConstraints"
+        tools:visibility="visible" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_create_scan"
         android:layout_width="wrap_content"
@@ -143,13 +173,36 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/empty_text"
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressIndicatorA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/empty_list"
-        tools:layout_editor_absoluteX="170dp"
-        tools:layout_editor_absoluteY="356dp"
-        tools:ignore="MissingConstraints" />
+        android:layout_gravity="center"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:indeterminateAnimationType="disjoint"
+        app:layout_constraintBottom_toTopOf="@+id/tv_captures"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_articles"
+        tools:visibility="visible" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressIndicatorRC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:indeterminateAnimationType="disjoint"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_captures"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
