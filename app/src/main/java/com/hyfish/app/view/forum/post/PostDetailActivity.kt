@@ -57,8 +57,25 @@ class PostDetailActivity : AppCompatActivity() {
 
             commentAdapter.submitList(post.comments)
 
+            viewModel.newLike.observe(this) {
+                it.getContentIfNotHandled()?.let { liked ->
+                    if (liked) {
+                        post.likes++
+                    } else {
+                        post.likes--
+                    }
+                    updateCounters(post)
+                }
+            }
+
             binding.btLike.setOnClickListener {
-//                TODO: like post
+//                TODO: get if post is liked
+                val liked = false
+                if (liked) {
+                    viewModel.unlikePost(post.id)
+                } else {
+                    viewModel.likePost(post.id)
+                }
             }
 
             binding.btComment.setOnClickListener {

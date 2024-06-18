@@ -40,6 +40,18 @@ class ForumRepository private constructor(
         return apiService.createComment(postId, data)
     }
 
+    suspend fun likePost(postId: Int) {
+        val user = runBlocking { userPreference.getSession().first() }
+        val apiService = ApiConfig.getApiService(user.token)
+        apiService.likePost(postId)
+    }
+
+    suspend fun unlikePost(postId: Int) {
+        val user = runBlocking { userPreference.getSession().first() }
+        val apiService = ApiConfig.getApiService(user.token)
+        apiService.unlikePost(postId)
+    }
+
     companion object {
         @Volatile
         private var instance: ForumRepository? = null

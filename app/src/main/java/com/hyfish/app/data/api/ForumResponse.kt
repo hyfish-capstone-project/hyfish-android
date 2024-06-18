@@ -45,7 +45,7 @@ data class PostItem(
 	val body: String,
 
 	@field:SerializedName("likes")
-	val likes: Int,
+	var likes: Int,
 
 	@field:SerializedName("tags")
 	val tags: List<String>

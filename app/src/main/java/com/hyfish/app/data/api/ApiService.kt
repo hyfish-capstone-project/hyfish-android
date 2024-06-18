@@ -8,6 +8,7 @@ import com.hyfish.app.data.api.auth.RegisterResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -47,6 +48,12 @@ interface ApiService {
         @Path("post_id") postId: Int,
         @Body data: CreateCommentRequest
     ): CreateCommentResponse
+
+    @POST("posts/{post_id}/like")
+    suspend fun likePost(@Path("post_id") postId: Int): LikePostResponse
+
+    @DELETE("posts/{post_id}/like")
+    suspend fun unlikePost(@Path("post_id") postId: Int): UnlikePostResponse
 
     @GET("captures")
     suspend fun getCaptures(): CaptureResponse
