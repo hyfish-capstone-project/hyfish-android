@@ -48,6 +48,14 @@ class HomeFragment : Fragment() {
             }
         }
 
+        viewModel.loading.observe(viewLifecycleOwner) {
+            binding.progressIndicatorA.visibility = if (it) View.VISIBLE else View.GONE
+        }
+
+        historyViewModel.loading.observe(viewLifecycleOwner) {
+            binding.progressIndicatorRC.visibility = if (it) View.VISIBLE else View.GONE
+        }
+
         binding.rvArticles.layoutManager = LinearLayoutManager(activity).apply {
             orientation = LinearLayoutManager.HORIZONTAL
         }
