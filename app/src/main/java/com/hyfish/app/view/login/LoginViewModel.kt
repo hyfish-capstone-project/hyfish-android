@@ -42,7 +42,7 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
                 val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
                 val errorMessage = errorBody.message
                 _loading.postValue(false)
-                _error.postValue(EventOnce(errorMessage ?: "Something went wrong"))
+                _error.postValue(EventOnce(errorMessage))
             } catch (e: Throwable) {
                 _loading.postValue(false)
                 _error.postValue(EventOnce(e.message ?: "Something went wrong"))

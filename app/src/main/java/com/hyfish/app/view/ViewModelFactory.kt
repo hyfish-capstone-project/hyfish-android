@@ -36,7 +36,7 @@ class ViewModelFactory(
                 LoginViewModel(userRepo) as T
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
-                HomeViewModel(userRepo, articleRepo, scanRepo) as T
+                HomeViewModel(userRepo, articleRepo) as T
             }
             modelClass.isAssignableFrom(ForumViewModel::class.java) -> {
                 ForumViewModel(forumRepo) as T

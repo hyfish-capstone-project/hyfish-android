@@ -37,7 +37,7 @@ class FishesAdapter : ListAdapter<FishItem, FishesAdapter.ItemViewHolder>(DIFF_C
 
     class ItemViewHolder(private val binding: ItemFishBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: FishItem){
-            if (item.images?.isNotEmpty() == true) {
+            if (item.images.isNotEmpty() == true) {
                 Glide.with(binding.root.context)
                     .load(item.images[0])
                     .into(binding.ivItemPhoto)
