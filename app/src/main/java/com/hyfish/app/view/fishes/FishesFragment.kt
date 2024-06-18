@@ -1,5 +1,6 @@
 package com.hyfish.app.view.fishes
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -42,9 +43,9 @@ class FishesFragment : Fragment() {
         binding.rvFishes.adapter = fishesAdapter
         fishesAdapter.setOnItemClickCallback(object : FishesAdapter.OnItemClickCallback {
             override fun onItemClicked(data: FishItem) {
-//                val intent = Intent(activity, ScanResultActivity::class.java)
-//                intent.putExtra(ScanResultActivity.EXTRA_CAPTURE, data)
-//                startActivity(intent)
+                val intent = Intent(activity, FishesDetailActivity::class.java)
+                intent.putExtra(FishesDetailActivity.EXTRA_FISH, data)
+                startActivity(intent)
             }
         })
         viewModel.fishes.observe(viewLifecycleOwner) { captures ->

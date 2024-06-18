@@ -20,6 +20,12 @@ data class FishResponse(
 @Parcelize
 data class FishItem(
 
+	@field:SerializedName("id")
+	val id: Int,
+
+	@field:SerializedName("images")
+	val images: List<String>,
+
 	@field:SerializedName("name")
 	val name: String,
 
@@ -29,57 +35,6 @@ data class FishItem(
 	@field:SerializedName("created_at")
 	val createdAt: String,
 
-	@field:SerializedName("id")
-	val id: Int,
-
-	@field:SerializedName("recipes")
-	val recipes: List<RecipesItem>? = null,
-
-	@field:SerializedName("images")
-	val images: List<String>? = null,
-) : Parcelable
-
-@Parcelize
-data class RecipesItem(
-
-	@field:SerializedName("name")
-	val name: String,
-
-	@field:SerializedName("ingredients")
-	val ingredients: List<IngredientsItem>,
-
-	@field:SerializedName("id")
-	val id: Int,
-
-	@field:SerializedName("steps")
-	val steps: List<StepsItem>
-) : Parcelable
-
-@Parcelize
-data class StepsItem(
-
-	@field:SerializedName("description")
-	val description: String,
-
-	@field:SerializedName("id")
-	val id: Int,
-
-	@field:SerializedName("order")
-	val order: Int
-) : Parcelable
-
-@Parcelize
-data class IngredientsItem(
-
-	@field:SerializedName("amount")
-	val amount: Int,
-
-	@field:SerializedName("name")
-	val name: String,
-
-	@field:SerializedName("id")
-	val id: Int,
-
-	@field:SerializedName("measurement")
-	val measurement: String
+	@field:SerializedName("nutrition_image_url")
+	val nutritionImageUrl: String? = null,
 ) : Parcelable
