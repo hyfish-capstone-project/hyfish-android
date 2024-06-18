@@ -68,16 +68,16 @@ class HistoryFragment : Fragment() {
             (binding.rvCaptures.adapter as CaptureAdapter).submitList(captures)
             currentCaptures = captures // Update currentCaptures when data changes
         }
+
+        if (viewModel.captures.value.isNullOrEmpty()) {
+            viewModel.getCaptures()
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        // Check if the data has changed
-        viewModel.captures.value?.let { newCaptures ->
-            if (newCaptures != currentCaptures) {
-                viewModel.getCaptures()
-            }
-        }
+//        karena scan ke activity lain, yang pake launcher gabisa
+        viewModel.getCaptures()
     }
 
     override fun onDestroyView() {
