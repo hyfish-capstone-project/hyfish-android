@@ -38,7 +38,6 @@ class PostDetailViewModel(
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
                 val errorMessage = errorBody.message
-//                _message.postValue(Event(errorMessage ?: "An error occurred"))
                 _loading.postValue(false)
             } catch (e: Exception) {
                 _loading.postValue(false)

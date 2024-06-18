@@ -45,8 +45,7 @@ interface ApiService {
 
     @POST("posts/{post_id}/comment")
     suspend fun createComment(
-        @Path("post_id") postId: Int,
-        @Body data: CreateCommentRequest
+        @Path("post_id") postId: Int, @Body data: CreateCommentRequest
     ): CreateCommentResponse
 
     @POST("posts/{post_id}/like")
@@ -61,8 +60,7 @@ interface ApiService {
     @POST("captures")
     @Multipart
     suspend fun createCapture(
-        @Part("type") type: RequestBody,
-        @Part image: MultipartBody.Part
+        @Part("type") type: RequestBody, @Part image: MultipartBody.Part
     ): PostCaptureResponse
 
     @GET("fishes")

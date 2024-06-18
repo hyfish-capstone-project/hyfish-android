@@ -35,6 +35,20 @@ class PostDetailActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        getPostDetail()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
+    }
+
+    private fun updateCounters(post: PostItem) {
+        binding.tvItemLikes.text = getString(R.string.item_likes, post.likes)
+        binding.tvItemComments.text = getString(R.string.item_comments, post.comments.size)
+    }
+
+    private fun getPostDetail() {
         val post = intent.getParcelableExtra<PostItem>(EXTRA_POST)
 
         if (post != null) {
@@ -101,16 +115,6 @@ class PostDetailActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    private fun updateCounters(post: PostItem) {
-        binding.tvItemLikes.text = getString(R.string.item_likes, post.likes)
-        binding.tvItemComments.text = getString(R.string.item_comments, post.comments.size)
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressedDispatcher.onBackPressed()
-        return true
     }
 
     companion object {

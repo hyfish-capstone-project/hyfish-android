@@ -1,6 +1,5 @@
 package com.hyfish.app.view.forum.post
 
-import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -22,8 +21,9 @@ class PostAddActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
 
-    private var _binding: ActivityPostAddBinding? = null
     private val binding get() = _binding!!
+
+    private var _binding: ActivityPostAddBinding? = null
 
     private var currentImageUri: Uri? = null
 
@@ -40,22 +40,21 @@ class PostAddActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        viewModel.loading.observe(this) {
-            binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
-        }
+        showLoading()
 
-        viewModel.status.observe(this) { success ->
-            if (success) {
-                // Set result and finish activity
-                setResult(Activity.RESULT_OK)
-                finish()
-            }
-        }
+        setupStatus()
 
-        binding.btAddImage.setOnClickListener {
-            startGallery()
-        }
+        setupGalleryButton()
 
+        setupUploadButton()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
+    }
+
+    private fun setupUploadButton() {
         binding.btSubmit.setOnClickListener {
             uploadImage()
         }
@@ -64,7 +63,6 @@ class PostAddActivity : AppCompatActivity() {
     private fun uploadImage() {
         currentImageUri?.let { uri ->
             val imageFile = uriToFile(uri, this).reduceFileImage()
-
             val title = binding.inTitle.text.toString()
             val body = binding.inBody.text.toString()
             val tags = listOf("test", "tag1")
@@ -96,8 +94,21 @@ class PostAddActivity : AppCompatActivity() {
         launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressedDispatcher.onBackPressed()
-        return true
+    private fun showLoading() {
+        viewModel.loading.observe(this) {
+            binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun setupStatus() {
+        binding.btAddImage.setOnClickListener {
+            startGallery()
+        }
+    }
+
+    private fun setupGalleryButton() {
+        binding.btAddImage.setOnClickListener {
+            startGallery()
+        }
     }
 }

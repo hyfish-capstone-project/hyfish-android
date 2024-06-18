@@ -24,11 +24,13 @@ class HomeFragment : Fragment() {
         ViewModelFactory.getInstance(requireActivity())
     }
     private val sharedViewModel by activityViewModels<MainViewModel>()
+
     private val historyViewModel by viewModels<HistoryViewModel> {
         ViewModelFactory.getInstance(requireActivity())
     }
 
     private var _binding: FragmentHomeBinding? = null
+
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -37,65 +39,27 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        viewModel.getSession().observe(viewLifecycleOwner) { user ->
-            if (!user.isLogin) {
-                startActivity(Intent(activity, LoginActivity::class.java))
-                activity?.finish()
-            } else {
-                binding.tvGreetings.text = getString(R.string.main_greetings, user.role)
-                viewModel.getArticles()
-                historyViewModel.getCapturesWithFishes()
-            }
-        }
-
-        viewModel.loading.observe(viewLifecycleOwner) {
-            binding.progressIndicatorA.visibility = if (it) View.VISIBLE else View.GONE
-        }
-
-        historyViewModel.loading.observe(viewLifecycleOwner) {
-            binding.progressIndicatorRC.visibility = if (it) View.VISIBLE else View.GONE
-        }
-
         binding.rvArticles.layoutManager = LinearLayoutManager(activity).apply {
             orientation = LinearLayoutManager.HORIZONTAL
         }
-        val articleAdapter = ArticleAdapter()
-        binding.rvArticles.adapter = articleAdapter
-
-        viewModel.articles.observe(viewLifecycleOwner) { articles ->
-            articleAdapter.submitList(articles)
-            binding.tvEmptyA.visibility = if (articles.isNullOrEmpty()) View.VISIBLE else View.GONE
-        }
 
         binding.rvCaptures.layoutManager = LinearLayoutManager(activity)
-        val captureAdapter = CaptureAdapter()
-        binding.rvCaptures.adapter = captureAdapter
-        captureAdapter.setOnItemClickCallback(object : CaptureAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: CaptureItemWithFish) {
-                val intent = Intent(activity, ScanResultActivity::class.java)
-                intent.putExtra(ScanResultActivity.EXTRA_CAPTURE, data)
-                startActivity(intent)
-            }
-        })
-
-        historyViewModel.capturesWithFishes.observe(viewLifecycleOwner) { capturesWithFishes ->
-            captureAdapter.submitList(capturesWithFishes.take(3))
-            binding.tvEmptyRc.visibility =
-                if (capturesWithFishes.isNullOrEmpty()) View.VISIBLE else View.GONE
-        }
 
         binding.tvSeallCaptures.setOnClickListener {
             sharedViewModel.selectTab(2)
         }
 
-        binding.fabCreateScan.setOnClickListener {
-            val intent = Intent(activity, ScanActivity::class.java)
-            startActivity(intent)
-        }
+        setupSession()
 
-        binding.btLogout.setOnClickListener {
-            viewModel.logout()
-        }
+        showLoading()
+
+        setupArticleAdapter()
+
+        setupCaptureAdapter()
+
+        setupScanButton()
+
+        setupLogoutButton()
 
         return root
     }
@@ -113,5 +77,69 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setupSession() {
+        viewModel.getSession().observe(viewLifecycleOwner) { user ->
+            if (!user.isLogin) {
+                startActivity(Intent(activity, LoginActivity::class.java))
+                activity?.finish()
+            } else {
+                binding.tvGreetings.text = getString(R.string.main_greetings, user.role)
+                viewModel.getArticles()
+                historyViewModel.getCapturesWithFishes()
+            }
+        }
+    }
+
+    private fun showLoading() {
+        viewModel.loading.observe(viewLifecycleOwner) {
+            binding.progressIndicatorA.visibility = if (it) View.VISIBLE else View.GONE
+        }
+
+        historyViewModel.loading.observe(viewLifecycleOwner) {
+            binding.progressIndicatorRC.visibility = if (it) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun setupArticleAdapter() {
+        val articleAdapter = ArticleAdapter()
+        binding.rvArticles.adapter = articleAdapter
+
+        viewModel.articles.observe(viewLifecycleOwner) { articles ->
+            articleAdapter.submitList(articles)
+            binding.tvEmptyA.visibility = if (articles.isNullOrEmpty()) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun setupScanButton() {
+        binding.fabCreateScan.setOnClickListener {
+            val intent = Intent(activity, ScanActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun setupLogoutButton() {
+        binding.btLogout.setOnClickListener {
+            viewModel.logout()
+        }
+    }
+
+    private fun setupCaptureAdapter() {
+        val captureAdapter = CaptureAdapter()
+        binding.rvCaptures.adapter = captureAdapter
+        captureAdapter.setOnItemClickCallback(object : CaptureAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: CaptureItemWithFish) {
+                val intent = Intent(activity, ScanResultActivity::class.java)
+                intent.putExtra(ScanResultActivity.EXTRA_CAPTURE, data)
+                startActivity(intent)
+            }
+        })
+
+        historyViewModel.capturesWithFishes.observe(viewLifecycleOwner) { capturesWithFishes ->
+            captureAdapter.submitList(capturesWithFishes.take(3))
+            binding.tvEmptyRc.visibility =
+                if (capturesWithFishes.isNullOrEmpty()) View.VISIBLE else View.GONE
+        }
     }
 }

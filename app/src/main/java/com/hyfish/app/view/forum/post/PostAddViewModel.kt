@@ -26,10 +26,7 @@ class PostAddViewModel(
     val status: LiveData<Boolean> = _status
 
     fun createPost(
-        title: String,
-        body: String,
-        tags: List<String>,
-        images: List<File>
+        title: String, body: String, tags: List<String>, images: List<File>
     ) {
         _loading.value = true
         viewModelScope.launch {
@@ -37,15 +34,11 @@ class PostAddViewModel(
                 val imagesPart = images.map {
                     val requestImageFile = it.asRequestBody("image/jpeg".toMediaType())
                     MultipartBody.Part.createFormData(
-                        "images[]",
-                        it.name,
-                        requestImageFile
+                        "images[]", it.name, requestImageFile
                     )
                 }
-
                 val rbTitle = title.toRequestBody("text/plain".toMediaType())
                 val rbBody = body.toRequestBody("text/plain".toMediaType())
-
                 val result = forumRepo.createPost(rbTitle, rbBody, tags, imagesPart)
                 _status.postValue(result.status)
                 _loading.postValue(false)
@@ -53,7 +46,6 @@ class PostAddViewModel(
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
                 val errorMessage = errorBody.message
-//                _message.postValue(Event(errorMessage ?: "An error occurred"))
                 _loading.postValue(false)
             } catch (e: Exception) {
                 _loading.postValue(false)

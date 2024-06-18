@@ -35,12 +35,11 @@ class FishesAdapter : ListAdapter<FishItem, FishesAdapter.ItemViewHolder>(DIFF_C
         }
     }
 
-    class ItemViewHolder(private val binding: ItemFishBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: FishItem){
+    class ItemViewHolder(private val binding: ItemFishBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: FishItem) {
             if (item.images.isNotEmpty() == true) {
-                Glide.with(binding.root.context)
-                    .load(item.images[0])
-                    .into(binding.ivItemPhoto)
+                Glide.with(binding.root.context).load(item.images[0]).into(binding.ivItemPhoto)
             }
             binding.tvItemTitle.text = item.name
         }
@@ -51,6 +50,7 @@ class FishesAdapter : ListAdapter<FishItem, FishesAdapter.ItemViewHolder>(DIFF_C
             override fun areItemsTheSame(oldItem: FishItem, newItem: FishItem): Boolean {
                 return oldItem == newItem
             }
+
             override fun areContentsTheSame(oldItem: FishItem, newItem: FishItem): Boolean {
                 return oldItem == newItem
             }

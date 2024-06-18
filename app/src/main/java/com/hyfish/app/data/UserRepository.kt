@@ -25,9 +25,6 @@ class UserRepository private constructor(
     suspend fun login(data: LoginRequest) = apiServiceNoToken.login(data)
 
     suspend fun logout() {
-//        val user = runBlocking { userPreference.getSession().first() }
-//        val apiService = ApiConfig.getApiService(user.token)
-//        apiService.logout()
         userPreference.logout()
     }
 
@@ -36,9 +33,8 @@ class UserRepository private constructor(
         private var instance: UserRepository? = null
         fun getInstance(
             userPreference: UserPreference
-        ): UserRepository =
-            instance ?: synchronized(this) {
-                instance ?: UserRepository(userPreference)
-            }.also { instance = it }
+        ): UserRepository = instance ?: synchronized(this) {
+            instance ?: UserRepository(userPreference)
+        }.also { instance = it }
     }
 }

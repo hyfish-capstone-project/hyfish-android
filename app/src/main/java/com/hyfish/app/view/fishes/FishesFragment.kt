@@ -19,8 +19,9 @@ class FishesFragment : Fragment() {
         ViewModelFactory.getInstance(requireActivity())
     }
 
-    private var _binding: FragmentFishesBinding? = null
     private val binding get() = _binding!!
+
+    private var _binding: FragmentFishesBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -33,10 +34,30 @@ class FishesFragment : Fragment() {
             insets
         }
 
+        showLoading()
+
+        setFishDetail()
+
+        viewModel.getFishes()
+
+        binding.emptyText.visibility =
+            if (viewModel.fishes.value.isNullOrEmpty()) View.VISIBLE else View.GONE
+
+        return root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun showLoading() {
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
             binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
+    }
 
+    private fun setFishDetail() {
         binding.rvFishes.layoutManager = GridLayoutManager(activity, 2)
         val fishesAdapter = FishesAdapter()
         binding.rvFishes.adapter = fishesAdapter
@@ -51,18 +72,5 @@ class FishesFragment : Fragment() {
             fishesAdapter.submitList(captures)
             binding.emptyText.visibility = if (captures.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
-
-        viewModel.getFishes()
-
-        binding.emptyText.visibility =
-            if (viewModel.fishes.value.isNullOrEmpty()) View.VISIBLE else View.GONE
-
-
-        return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

@@ -36,43 +36,51 @@ class RegisterActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        binding.textView.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-
-        viewModel.loading.observe(this) {
-            binding.btSubmit.isEnabled = !it
-            binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
-        }
-
         viewModel.error.observe(this) {
             it.getContentIfNotHandled()?.let { message ->
                 showError(message)
             }
         }
 
-        viewModel.user.observe(this) {
-            if (it != null) {
-                AlertDialog.Builder(this).apply {
-                    setTitle(getString(R.string.success))
-                    setMessage(getString(R.string.register_success))
-                    setPositiveButton(getString(R.string.ok)) { _, _ ->
-                        startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
-                        finish()
-                    }
-                    create()
-                    show()
-                }
-            }
-        }
+        showDialog()
 
+        setupLogin()
+
+        showLoading()
+
+        setupRegisterButton()
+    }
+
+    private fun showError(message: String) {
+        AlertDialog.Builder(this).apply {
+            setTitle(getString(R.string.error))
+            setMessage(message)
+            setPositiveButton(getString(R.string.ok)) { _, _ -> }
+            create()
+            show()
+        }
+    }
+
+    private fun setupLogin() {
+        binding.textView.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    private fun showLoading() {
+        viewModel.loading.observe(this) {
+            binding.btSubmit.isEnabled = !it
+            binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun setupRegisterButton() {
         binding.btSubmit.setOnClickListener {
             if (!it.isEnabled) return@setOnClickListener
 
-            if (binding.inPassword.error != null
-                || binding.inConfirm.error != null) {
+            if (binding.inPassword.error != null || binding.inConfirm.error != null) {
                 return@setOnClickListener
             }
 
@@ -90,13 +98,20 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun showError(message: String) {
-        AlertDialog.Builder(this).apply {
-            setTitle(getString(R.string.error))
-            setMessage(message)
-            setPositiveButton(getString(R.string.ok)) { _, _ -> }
-            create()
-            show()
+    private fun showDialog() {
+        viewModel.user.observe(this) {
+            if (it != null) {
+                AlertDialog.Builder(this).apply {
+                    setTitle(getString(R.string.success))
+                    setMessage(getString(R.string.register_success))
+                    setPositiveButton(getString(R.string.ok)) { _, _ ->
+                        startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+                        finish()
+                    }
+                    create()
+                    show()
+                }
+            }
         }
     }
 }

@@ -37,7 +37,6 @@ class ScanViewModel(
     val fishes: LiveData<List<FishItem>> = _fishes
 
 
-
     fun getFishes() {
         viewModelScope.launch {
             try {
@@ -60,9 +59,7 @@ class ScanViewModel(
             try {
                 val requestImageFile = image.asRequestBody("image/jpeg".toMediaType())
                 val imagePart = MultipartBody.Part.createFormData(
-                    "image",
-                    image.name,
-                    requestImageFile
+                    "image", image.name, requestImageFile
                 )
 
                 val rbType = type.toRequestBody("text/plain".toMediaType())

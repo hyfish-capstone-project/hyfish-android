@@ -21,10 +21,7 @@ class ForumRepository private constructor(
     }
 
     suspend fun createPost(
-        title: RequestBody,
-        body: RequestBody,
-        tags: List<String>,
-        images: List<MultipartBody.Part>
+        title: RequestBody, body: RequestBody, tags: List<String>, images: List<MultipartBody.Part>
     ): CreatePostResponse {
         val user = runBlocking { userPreference.getSession().first() }
         val apiService = ApiConfig.getApiService(user.token)
@@ -57,9 +54,8 @@ class ForumRepository private constructor(
         private var instance: ForumRepository? = null
         fun getInstance(
             userPreference: UserPreference
-        ): ForumRepository =
-            instance ?: synchronized(this) {
-                instance ?: ForumRepository(userPreference)
-            }.also { instance = it }
+        ): ForumRepository = instance ?: synchronized(this) {
+            instance ?: ForumRepository(userPreference)
+        }.also { instance = it }
     }
 }

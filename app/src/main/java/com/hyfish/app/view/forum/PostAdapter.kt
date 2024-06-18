@@ -18,8 +18,32 @@ class PostAdapter : ListAdapter<PostItem, PostAdapter.ItemViewHolder>(DIFF_CALLB
         fun onItemClicked(data: PostItem)
     }
 
-    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
-        this.onItemClickCallback = onItemClickCallback
+    class ItemViewHolder(private val binding: ItemPostBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: PostItem) {
+            if (item.images.isNotEmpty()) {
+                binding.ivItemPhoto.visibility = View.VISIBLE
+                Glide.with(binding.root.context).load(item.images[0]).into(binding.ivItemPhoto)
+            } else {
+                binding.ivItemPhoto.visibility = View.GONE
+            }
+            binding.tvItemUsername.text = item.title
+            binding.tvItemDate.text = item.createdAt
+            binding.tvItemBody.text =
+                if (item.body.length > 200) item.body.substring(0, 200) else item.body
+            binding.tvItemLikes.text =
+                binding.root.context.getString(R.string.item_likes, item.likes)
+            binding.tvItemComments.text =
+                binding.root.context.getString(R.string.item_comments, item.comments.size)
+
+            binding.btLike.setOnClickListener {
+//                TODO: like post
+            }
+
+            binding.btComment.setOnClickListener {
+                itemView.performClick()
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -37,30 +61,8 @@ class PostAdapter : ListAdapter<PostItem, PostAdapter.ItemViewHolder>(DIFF_CALLB
         }
     }
 
-    class ItemViewHolder(private val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: PostItem){
-            if (item.images.isNotEmpty()) {
-                binding.ivItemPhoto.visibility = View.VISIBLE
-                Glide.with(binding.root.context)
-                    .load(item.images[0])
-                    .into(binding.ivItemPhoto)
-            } else {
-                binding.ivItemPhoto.visibility = View.GONE
-            }
-            binding.tvItemUsername.text = item.title
-            binding.tvItemDate.text = item.createdAt
-            binding.tvItemBody.text = if (item.body.length > 200) item.body.substring(0, 200) else item.body
-            binding.tvItemLikes.text = binding.root.context.getString(R.string.item_likes, item.likes)
-            binding.tvItemComments.text = binding.root.context.getString(R.string.item_comments, item.comments.size)
-
-            binding.btLike.setOnClickListener {
-//                TODO: like post
-            }
-
-            binding.btComment.setOnClickListener {
-                itemView.performClick()
-            }
-        }
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
     }
 
     companion object {
@@ -68,6 +70,7 @@ class PostAdapter : ListAdapter<PostItem, PostAdapter.ItemViewHolder>(DIFF_CALLB
             override fun areItemsTheSame(oldItem: PostItem, newItem: PostItem): Boolean {
                 return oldItem == newItem
             }
+
             override fun areContentsTheSame(oldItem: PostItem, newItem: PostItem): Boolean {
                 return oldItem == newItem
             }

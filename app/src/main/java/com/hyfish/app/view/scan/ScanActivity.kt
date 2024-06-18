@@ -24,19 +24,15 @@ import com.hyfish.app.util.uriToFile
 import com.hyfish.app.view.ViewModelFactory
 
 class ScanActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityScanBinding
+
     private val viewModel by viewModels<ScanViewModel> {
         ViewModelFactory.getInstance(this)
     }
 
-    enum class ScanType(val value: String) {
-        FRESHNESS("freshness"),
-        CLASSIFICATION("classification"),
-    }
-
     private var currentImageUri: Uri? = null
-    private var cachedFishes = emptyList<FishItem>()
 
-    private lateinit var binding: ActivityScanBinding
+    private var cachedFishes = emptyList<FishItem>()
 
     private val launchGallery =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
@@ -61,29 +57,19 @@ class ScanActivity : AppCompatActivity() {
         }
     }
 
-    private val launchCamera =
-        registerForActivityResult(
-            ActivityResultContracts.TakePicture()
-        ) { isSuccessful ->
-            if (isSuccessful) {
-                currentImageUri?.let {
-                    Log.d(TAG, "Selected image: $it")
-                    binding.previewImageView.setImageURI(it)
-                }
+    private val launchCamera = registerForActivityResult(
+        ActivityResultContracts.TakePicture()
+    ) { isSuccessful ->
+        if (isSuccessful) {
+            currentImageUri?.let {
+                Log.d(TAG, "Selected image: $it")
+                binding.previewImageView.setImageURI(it)
             }
         }
+    }
 
-    private fun permissionGranted() = ContextCompat.checkSelfPermission(
-        this, PERMISSION
-    ) == PackageManager.PERMISSION_GRANTED
-
-    private fun startCamera() {
-        if (!permissionGranted()) {
-            requestPermission.launch(Manifest.permission.CAMERA)
-        } else {
-            currentImageUri = getImageUri(this)
-            launchCamera.launch(currentImageUri!!)
-        }
+    enum class ScanType(val value: String) {
+        FRESHNESS("freshness"), CLASSIFICATION("classification"),
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,59 +81,37 @@ class ScanActivity : AppCompatActivity() {
         supportActionBar?.title = getString(R.string.title_scan)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        viewModel.loading.observe(this) {
-            binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
-        }
+        showLoading()
 
-        viewModel.error.observe(this) {
-            it.getContentIfNotHandled()?.let { message ->
-                showToast(message)
-            }
-        }
+        showError()
 
-        viewModel.captureItem.observe(this) { captureItem ->
-            Log.d("captureItem", "Capture item: $captureItem")
-            val captureItemWithFish = CaptureItemWithFish(
-                score = captureItem.score,
-                updatedAt = captureItem.updatedAt,
-                userId = captureItem.userId,
-                imageUrl = captureItem.imageUrl,
-                createdAt = captureItem.createdAt,
-                id = captureItem.id,
-                type = captureItem.type,
-                freshness = captureItem.freshness,
-                fishId = captureItem.fishId,
-                fish = cachedFishes.firstOrNull { it.id == captureItem.fishId }
-            )
-            val intent = Intent(this, ScanResultActivity::class.java)
-            intent.putExtra(ScanResultActivity.EXTRA_CAPTURE, captureItemWithFish)
-            startActivity(intent)
-            finish()
-        }
+        setupCaptureItem()
 
-        binding.galleryButton.setOnClickListener {
-            launchGallery.launch(
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-            )
-        }
-
-        binding.cameraButton.setOnClickListener {
-            startCamera()
-        }
-
-        binding.freshnessButton.setOnClickListener {
-            uploadImage(ScanType.FRESHNESS)
-        }
-
-        binding.classificationButton.setOnClickListener {
-            uploadImage(ScanType.CLASSIFICATION)
-        }
+        setupOnClickButton()
 
         viewModel.fishes.observe(this) { fishes ->
             cachedFishes = fishes
         }
         viewModel.getFishes()
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
+    }
+
+    private fun startCamera() {
+        if (!permissionGranted()) {
+            requestPermission.launch(Manifest.permission.CAMERA)
+        } else {
+            currentImageUri = getImageUri(this)
+            launchCamera.launch(currentImageUri!!)
+        }
+    }
+
+    private fun permissionGranted() = ContextCompat.checkSelfPermission(
+        this, PERMISSION
+    ) == PackageManager.PERMISSION_GRANTED
 
     private fun uploadImage(type: ScanType) {
         if (currentImageUri != null) {
@@ -166,9 +130,58 @@ class ScanActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressedDispatcher.onBackPressed()
-        return true
+    private fun showLoading() {
+        viewModel.loading.observe(this) {
+            binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun showError() {
+        viewModel.error.observe(this) {
+            it.getContentIfNotHandled()?.let { message ->
+                showToast(message)
+            }
+        }
+    }
+
+    private fun setupCaptureItem() {
+        viewModel.captureItem.observe(this) { captureItem ->
+            Log.d("captureItem", "Capture item: $captureItem")
+            val captureItemWithFish = CaptureItemWithFish(score = captureItem.score,
+                updatedAt = captureItem.updatedAt,
+                userId = captureItem.userId,
+                imageUrl = captureItem.imageUrl,
+                createdAt = captureItem.createdAt,
+                id = captureItem.id,
+                type = captureItem.type,
+                freshness = captureItem.freshness,
+                fishId = captureItem.fishId,
+                fish = cachedFishes.firstOrNull { it.id == captureItem.fishId })
+            val intent = Intent(this, ScanResultActivity::class.java)
+            intent.putExtra(ScanResultActivity.EXTRA_CAPTURE, captureItemWithFish)
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    private fun setupOnClickButton() {
+        binding.galleryButton.setOnClickListener {
+            launchGallery.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )
+        }
+
+        binding.cameraButton.setOnClickListener {
+            startCamera()
+        }
+
+        binding.freshnessButton.setOnClickListener {
+            uploadImage(ScanType.FRESHNESS)
+        }
+
+        binding.classificationButton.setOnClickListener {
+            uploadImage(ScanType.CLASSIFICATION)
+        }
     }
 
     companion object {

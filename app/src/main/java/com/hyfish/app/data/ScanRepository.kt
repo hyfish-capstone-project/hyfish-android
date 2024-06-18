@@ -13,8 +13,7 @@ class ScanRepository private constructor(
     private val userPreference: UserPreference
 ) {
     suspend fun uploadScan(
-        type: RequestBody,
-        image: MultipartBody.Part
+        type: RequestBody, image: MultipartBody.Part
     ): PostCaptureResponse {
         val user = runBlocking { userPreference.getSession().first() }
         val apiService = ApiConfig.getApiService(user.token)
@@ -32,9 +31,8 @@ class ScanRepository private constructor(
         private var instance: ScanRepository? = null
         fun getInstance(
             userPreference: UserPreference
-        ): ScanRepository =
-            instance ?: synchronized(this) {
-                instance ?: ScanRepository(userPreference)
-            }.also { instance = it }
+        ): ScanRepository = instance ?: synchronized(this) {
+            instance ?: ScanRepository(userPreference)
+        }.also { instance = it }
     }
 }

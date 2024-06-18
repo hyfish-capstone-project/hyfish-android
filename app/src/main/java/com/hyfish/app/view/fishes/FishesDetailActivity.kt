@@ -26,6 +26,16 @@ class FishesDetailActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        getFishDetail()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
+    }
+
+    @Suppress("DEPRECATION")
+    private fun getFishDetail() {
         val fish = intent.getParcelableExtra<FishItem>(EXTRA_FISH)
 
         if (fish != null) {
@@ -41,16 +51,12 @@ class FishesDetailActivity : AppCompatActivity() {
 
             if (fish.nutritionImageUrl?.isNotEmpty() == true) {
                 binding.ivNutrition.visibility = View.VISIBLE
-                Glide.with(binding.root.context).load(fish.nutritionImageUrl).into(binding.ivNutrition)
+                Glide.with(binding.root.context).load(fish.nutritionImageUrl)
+                    .into(binding.ivNutrition)
             } else {
                 binding.ivNutrition.visibility = View.GONE
             }
         }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressedDispatcher.onBackPressed()
-        return true
     }
 
     companion object {

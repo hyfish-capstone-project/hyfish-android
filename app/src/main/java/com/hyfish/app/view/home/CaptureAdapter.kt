@@ -10,15 +10,34 @@ import com.hyfish.app.data.api.CaptureItemWithFish
 import com.hyfish.app.databinding.ItemCaptureBinding
 import com.hyfish.app.view.scan.ScanActivity
 
-class CaptureAdapter : ListAdapter<CaptureItemWithFish, CaptureAdapter.ItemViewHolder>(DIFF_CALLBACK) {
+class CaptureAdapter :
+    ListAdapter<CaptureItemWithFish, CaptureAdapter.ItemViewHolder>(DIFF_CALLBACK) {
     private var onItemClickCallback: OnItemClickCallback? = null
 
     interface OnItemClickCallback {
         fun onItemClicked(data: CaptureItemWithFish)
     }
 
-    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
-        this.onItemClickCallback = onItemClickCallback
+    class ItemViewHolder(private val binding: ItemCaptureBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: CaptureItemWithFish) {
+            Glide.with(binding.root.context).load(item.imageUrl).into(binding.ivItemPhoto)
+            when (item.type) {
+                ScanActivity.ScanType.FRESHNESS.value -> {
+                    binding.tvItemTitle.text = item.freshness
+                }
+
+                ScanActivity.ScanType.CLASSIFICATION.value -> {
+                    binding.tvItemTitle.text = item.fish?.name ?: "Unknown"
+                }
+
+                else -> {
+                    throw IllegalArgumentException("Unknown scan type")
+                }
+            }
+            binding.tvItemDescription.text = item.type
+            binding.tvItemDatetime.text = item.createdAt
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -36,33 +55,21 @@ class CaptureAdapter : ListAdapter<CaptureItemWithFish, CaptureAdapter.ItemViewH
         }
     }
 
-    class ItemViewHolder(private val binding: ItemCaptureBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: CaptureItemWithFish){
-            Glide.with(binding.root.context)
-                .load(item.imageUrl)
-                .into(binding.ivItemPhoto)
-            when (item.type) {
-                ScanActivity.ScanType.FRESHNESS.value -> {
-                    binding.tvItemTitle.text = item.freshness
-                }
-                ScanActivity.ScanType.CLASSIFICATION.value -> {
-                    binding.tvItemTitle.text = item.fish?.name ?: "Unknown"
-                }
-                else -> {
-                    throw IllegalArgumentException("Unknown scan type")
-                }
-            }
-            binding.tvItemDescription.text = item.type
-            binding.tvItemDatetime.text = item.createdAt
-        }
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
     }
 
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<CaptureItemWithFish>() {
-            override fun areItemsTheSame(oldItem: CaptureItemWithFish, newItem: CaptureItemWithFish): Boolean {
+            override fun areItemsTheSame(
+                oldItem: CaptureItemWithFish, newItem: CaptureItemWithFish
+            ): Boolean {
                 return oldItem == newItem
             }
-            override fun areContentsTheSame(oldItem: CaptureItemWithFish, newItem: CaptureItemWithFish): Boolean {
+
+            override fun areContentsTheSame(
+                oldItem: CaptureItemWithFish, newItem: CaptureItemWithFish
+            ): Boolean {
                 return oldItem == newItem
             }
         }

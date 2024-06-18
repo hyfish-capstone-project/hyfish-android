@@ -34,8 +34,9 @@ class CommentAdapter : ListAdapter<CommentsItem, CommentAdapter.ItemViewHolder>(
         }
     }
 
-    class ItemViewHolder(private val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: CommentsItem){
+    class ItemViewHolder(private val binding: ItemCommentBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: CommentsItem) {
             binding.tvItemUsername.text = item.author.username
             binding.tvItemMessage.text = item.message
         }
@@ -46,6 +47,7 @@ class CommentAdapter : ListAdapter<CommentsItem, CommentAdapter.ItemViewHolder>(
             override fun areItemsTheSame(oldItem: CommentsItem, newItem: CommentsItem): Boolean {
                 return oldItem == newItem
             }
+
             override fun areContentsTheSame(oldItem: CommentsItem, newItem: CommentsItem): Boolean {
                 return oldItem == newItem
             }

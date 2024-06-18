@@ -26,9 +26,8 @@ class ArticleRepository private constructor(
         private var instance: ArticleRepository? = null
         fun getInstance(
             userPreference: UserPreference
-        ): ArticleRepository =
-            instance ?: synchronized(this) {
-                instance ?: ArticleRepository(userPreference)
-            }.also { instance = it }
+        ): ArticleRepository = instance ?: synchronized(this) {
+            instance ?: ArticleRepository(userPreference)
+        }.also { instance = it }
     }
 }
