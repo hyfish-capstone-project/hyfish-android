@@ -23,8 +23,7 @@ class FishesFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFishesBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -50,9 +49,14 @@ class FishesFragment : Fragment() {
         })
         viewModel.fishes.observe(viewLifecycleOwner) { captures ->
             fishesAdapter.submitList(captures)
+            binding.emptyText.visibility = if (captures.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
 
         viewModel.getFishes()
+
+        binding.emptyText.visibility =
+            if (viewModel.fishes.value.isNullOrEmpty()) View.VISIBLE else View.GONE
+
 
         return root
     }

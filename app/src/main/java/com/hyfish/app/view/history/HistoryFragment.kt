@@ -58,11 +58,17 @@ class HistoryFragment : Fragment() {
 
         viewModel.capturesWithFishes.observe(viewLifecycleOwner) { capturesWithFishes ->
             captureAdapter.submitList(capturesWithFishes)
+            binding.emptyText.visibility =
+                if (capturesWithFishes.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
 
         if (viewModel.capturesWithFishes.value.isNullOrEmpty()) {
             viewModel.getCapturesWithFishes()
         }
+
+        binding.emptyText.visibility =
+            if (viewModel.capturesWithFishes.value.isNullOrEmpty()) View.VISIBLE else View.GONE
+
 
         return root
     }

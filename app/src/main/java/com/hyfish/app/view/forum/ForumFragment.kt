@@ -54,12 +54,16 @@ class ForumFragment : Fragment() {
 
         viewModel.forums.observe(viewLifecycleOwner) {
             postAdapter.submitList(it)
+            binding.emptyText.visibility = if (it.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
 
         binding.fabCreatePost.setOnClickListener {
             val intent = Intent(activity, PostAddActivity::class.java)
             addPostLauncher.launch(intent)
         }
+
+        binding.emptyText.visibility =
+            if (viewModel.forums.value.isNullOrEmpty()) View.VISIBLE else View.GONE
 
         return root
     }
