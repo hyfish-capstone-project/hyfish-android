@@ -38,7 +38,9 @@ class PostDetailActivity : AppCompatActivity() {
                 binding.ivItemPhoto.visibility = View.GONE
             }
 
-            binding.tvItemUsername.text = post.title
+            binding.tvItemTitle.text = post.title
+            binding.tvItemDate.text = post.createdAt
+            binding.tvItemUsername.text = post.author
             binding.tvItemBody.text = post.body
             binding.tvItemLikes.text =
                 binding.root.context.getString(R.string.item_likes, post.likes)

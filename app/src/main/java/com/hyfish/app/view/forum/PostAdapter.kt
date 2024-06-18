@@ -48,6 +48,7 @@ class PostAdapter : ListAdapter<PostItem, PostAdapter.ItemViewHolder>(DIFF_CALLB
                 binding.ivItemPhoto.visibility = View.GONE
             }
             binding.tvItemUsername.text = item.title
+            binding.tvItemDate.text = item.createdAt
             binding.tvItemBody.text = if (item.body.length > 200) item.body.substring(0, 200) else item.body
             binding.tvItemLikes.text = binding.root.context.getString(R.string.item_likes, item.likes)
             binding.tvItemComments.text = binding.root.context.getString(R.string.item_comments, item.comments.size)
