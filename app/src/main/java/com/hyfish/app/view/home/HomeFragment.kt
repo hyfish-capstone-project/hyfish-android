@@ -71,7 +71,7 @@ class HomeFragment : Fragment() {
         })
 
         historyViewModel.capturesWithFishes.observe(viewLifecycleOwner) { capturesWithFishes ->
-            captureAdapter.submitList(capturesWithFishes)
+            captureAdapter.submitList(capturesWithFishes.take(3))
             binding.tvEmptyRc.visibility =
                 if (capturesWithFishes.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
