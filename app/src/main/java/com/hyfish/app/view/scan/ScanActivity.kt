@@ -15,6 +15,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.hyfish.app.R
+import com.hyfish.app.data.api.CaptureItemWithFish
 import com.hyfish.app.data.api.FishItem
 import com.hyfish.app.databinding.ActivityScanBinding
 import com.hyfish.app.util.getImageUri
@@ -106,8 +107,20 @@ class ScanActivity : AppCompatActivity() {
 
         viewModel.captureItem.observe(this) { captureItem ->
             Log.d("captureItem", "Capture item: $captureItem")
+            val captureItemWithFish = CaptureItemWithFish(
+                score = captureItem.score,
+                updatedAt = captureItem.updatedAt,
+                userId = captureItem.userId,
+                imageUrl = captureItem.imageUrl,
+                createdAt = captureItem.createdAt,
+                id = captureItem.id,
+                type = captureItem.type,
+                freshness = captureItem.freshness,
+                fishId = captureItem.fishId,
+                fish = cachedFishes.firstOrNull { it.id == captureItem.fishId }
+            )
             val intent = Intent(this, ScanResultActivity::class.java)
-            intent.putExtra(ScanResultActivity.EXTRA_CAPTURE, captureItem)
+            intent.putExtra(ScanResultActivity.EXTRA_CAPTURE, captureItemWithFish)
             startActivity(intent)
             finish()
         }
