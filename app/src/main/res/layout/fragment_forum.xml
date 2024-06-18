@@ -44,9 +44,12 @@
         android:id="@+id/empty_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="@string/empty_list"
+        android:visibility="gone"
+        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="170dp"
         tools:layout_editor_absoluteY="356dp"
-        tools:ignore="MissingConstraints" />
+        tools:visibility="visible" />
 
 </FrameLayout>
