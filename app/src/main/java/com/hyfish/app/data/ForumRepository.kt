@@ -1,6 +1,8 @@
 package com.hyfish.app.data
 
 import com.hyfish.app.data.api.ApiConfig
+import com.hyfish.app.data.api.CreateCommentRequest
+import com.hyfish.app.data.api.CreateCommentResponse
 import com.hyfish.app.data.api.CreatePostResponse
 import com.hyfish.app.data.api.ForumResponse
 import com.hyfish.app.data.pref.UserPreference
@@ -27,6 +29,15 @@ class ForumRepository private constructor(
         val user = runBlocking { userPreference.getSession().first() }
         val apiService = ApiConfig.getApiService(user.token)
         return apiService.createPost(title, body, tags, images)
+    }
+
+    suspend fun createComment(
+        postId: Int,
+        data: CreateCommentRequest,
+    ): CreateCommentResponse {
+        val user = runBlocking { userPreference.getSession().first() }
+        val apiService = ApiConfig.getApiService(user.token)
+        return apiService.createComment(postId, data)
     }
 
     companion object {

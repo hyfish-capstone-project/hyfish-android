@@ -77,4 +77,5 @@
     <string name="fish_description">Description of Fish</string>
     <string name="title_fish_detail">Fish Detail</string>
     <string name="empty_list">Empty List</string>
+    <string name="write_a_comment">Write a comment</string>
 </resources>

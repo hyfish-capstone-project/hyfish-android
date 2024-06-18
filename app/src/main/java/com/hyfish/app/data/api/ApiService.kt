@@ -42,6 +42,12 @@ interface ApiService {
         @Part images: List<MultipartBody.Part>
     ): CreatePostResponse
 
+    @POST("posts/{post_id}/comment")
+    suspend fun createComment(
+        @Path("post_id") postId: Int,
+        @Body data: CreateCommentRequest
+    ): CreateCommentResponse
+
     @GET("captures")
     suspend fun getCaptures(): CaptureResponse
 

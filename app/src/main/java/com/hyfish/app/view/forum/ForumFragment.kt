@@ -68,11 +68,9 @@ class ForumFragment : Fragment() {
         return root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        if (viewModel.forums.value.isNullOrEmpty()) {
-            viewModel.getForums()
-        }
+    override fun onResume() {
+        super.onResume()
+        viewModel.getForums()
     }
 
     override fun onDestroyView() {
