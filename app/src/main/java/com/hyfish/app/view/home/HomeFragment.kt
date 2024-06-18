@@ -10,10 +10,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hyfish.app.R
-import com.hyfish.app.data.api.CaptureItem
+import com.hyfish.app.data.api.CaptureItemWithFish
 import com.hyfish.app.databinding.FragmentHomeBinding
 import com.hyfish.app.view.MainViewModel
 import com.hyfish.app.view.ViewModelFactory
+import com.hyfish.app.view.history.HistoryViewModel
 import com.hyfish.app.view.login.LoginActivity
 import com.hyfish.app.view.scan.ScanActivity
 import com.hyfish.app.view.scan.ScanResultActivity
@@ -23,13 +24,16 @@ class HomeFragment : Fragment() {
         ViewModelFactory.getInstance(requireActivity())
     }
     private val sharedViewModel by activityViewModels<MainViewModel>()
+    private val historyViewModel by viewModels<HistoryViewModel> {
+        ViewModelFactory.getInstance(requireActivity())
+    }
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
     private fun getData() {
         viewModel.getArticles()
-        viewModel.getCaptures()
+        historyViewModel.getCapturesWithFishes()
     }
 
     override fun onCreateView(
@@ -62,15 +66,15 @@ class HomeFragment : Fragment() {
         val captureAdapter = CaptureAdapter()
         binding.rvCaptures.adapter = captureAdapter
         captureAdapter.setOnItemClickCallback(object : CaptureAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: CaptureItem) {
+            override fun onItemClicked(data: CaptureItemWithFish) {
                 val intent = Intent(activity, ScanResultActivity::class.java)
                 intent.putExtra(ScanResultActivity.EXTRA_CAPTURE, data)
                 startActivity(intent)
             }
         })
 
-        viewModel.captures.observe(viewLifecycleOwner) { captures ->
-            captureAdapter.submitList(captures)
+        historyViewModel.capturesWithFishes.observe(viewLifecycleOwner) { capturesWithFishes ->
+            captureAdapter.submitList(capturesWithFishes)
         }
 
         binding.tvSeallCaptures.setOnClickListener {
@@ -89,10 +93,9 @@ class HomeFragment : Fragment() {
         return root
     }
 
-    //    TODO: cari pengganti onResume buat refresh data, soalnya kalo gini tiap kali balik ke fragment ini data di load ulang
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (viewModel.articles.value.isNullOrEmpty() || viewModel.captures.value.isNullOrEmpty()) {
+        if (viewModel.articles.value.isNullOrEmpty() || historyViewModel.capturesWithFishes.value.isNullOrEmpty()) {
             getData()
         }
     }

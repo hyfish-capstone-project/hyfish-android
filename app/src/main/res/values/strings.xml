@@ -72,4 +72,8 @@
     <string name="scan_detail">Scan Detail</string>
     <string name="score">Score: %1$s</string>
     <string name="created_at">Created at: %1$s</string>
+    <string name="fish_name">Fish Name</string>
+    <string name="fish_nutrition">Nutritional Value Information</string>
+    <string name="fish_description">Description of Fish</string>
+    <string name="title_fish_detail">Fish Detail</string>
 </resources>

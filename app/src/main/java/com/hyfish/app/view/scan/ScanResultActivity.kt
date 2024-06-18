@@ -1,17 +1,20 @@
 package com.hyfish.app.view.scan
 
+import android.content.Intent
 import android.icu.text.DecimalFormat
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.hyfish.app.R
-import com.hyfish.app.data.api.CaptureItem
+import com.hyfish.app.data.api.CaptureItemWithFish
 import com.hyfish.app.databinding.ActivityScanResultBinding
+import com.hyfish.app.view.fishes.FishesDetailActivity
 
 class ScanResultActivity : AppCompatActivity() {
     private lateinit var binding: ActivityScanResultBinding
@@ -29,7 +32,7 @@ class ScanResultActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val item = intent.getParcelableExtra<CaptureItem>(EXTRA_CAPTURE)
+        val item = intent.getParcelableExtra<CaptureItemWithFish>(EXTRA_CAPTURE)
 
         Log.d("CaptureItem", "Showing item $item")
         if (item != null) {
@@ -49,17 +52,21 @@ class ScanResultActivity : AppCompatActivity() {
 
             when (item.type) {
                 ScanActivity.ScanType.CLASSIFICATION.value -> {
-        //                TODO: get the fish from API
-                    item.fishId?.let {
-                        Glide.with(binding.root.context)
-                            .load(item.imageUrl)
-                            .into(binding.ivFishPhoto)
-                        binding.tvFishName.text = "Fish $it"
+                    item.fish?.let { fish ->
+                        if (fish.images.isNotEmpty()) {
+                            Glide.with(binding.root.context)
+                                .load(fish.images[0])
+                                .into(binding.ivFishPhoto)
+                        }
+
+                        binding.tvFishName.text = fish.name
                         binding.tvClassification.visibility = View.VISIBLE
                         binding.cvClassification.visibility = View.VISIBLE
 
                         binding.cvClassification.setOnClickListener {
-//                            TODO: navigate to fish detail
+                            val intent = Intent(this, FishesDetailActivity::class.java)
+                            intent.putExtra(FishesDetailActivity.EXTRA_FISH, fish)
+                            startActivity(intent)
                         }
                     }
                 }
@@ -83,6 +90,10 @@ class ScanResultActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return true
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
     companion object {

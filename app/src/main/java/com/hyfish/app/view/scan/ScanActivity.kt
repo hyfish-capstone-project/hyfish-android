@@ -15,6 +15,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.hyfish.app.R
+import com.hyfish.app.data.api.FishItem
 import com.hyfish.app.databinding.ActivityScanBinding
 import com.hyfish.app.util.getImageUri
 import com.hyfish.app.util.reduceFileImage
@@ -32,6 +33,7 @@ class ScanActivity : AppCompatActivity() {
     }
 
     private var currentImageUri: Uri? = null
+    private var cachedFishes = emptyList<FishItem>()
 
     private lateinit var binding: ActivityScanBinding
 
@@ -127,6 +129,11 @@ class ScanActivity : AppCompatActivity() {
         binding.classificationButton.setOnClickListener {
             uploadImage(ScanType.CLASSIFICATION)
         }
+
+        viewModel.fishes.observe(this) { fishes ->
+            cachedFishes = fishes
+        }
+        viewModel.getFishes()
     }
 
     private fun uploadImage(type: ScanType) {
