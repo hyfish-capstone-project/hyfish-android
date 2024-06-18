@@ -27,7 +27,7 @@ data class PostItem(
 	val followers: Int,
 
 	@field:SerializedName("comments")
-	val comments: List<CommentsItem>,
+    var comments: List<CommentsItem>,
 
 	@field:SerializedName("author")
 	val author: String,
@@ -45,7 +45,7 @@ data class PostItem(
 	val body: String,
 
 	@field:SerializedName("likes")
-	val likes: Int,
+	var likes: Int,
 
 	@field:SerializedName("tags")
 	val tags: List<String>

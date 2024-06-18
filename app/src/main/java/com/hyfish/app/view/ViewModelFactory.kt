@@ -12,6 +12,7 @@ import com.hyfish.app.di.Injection
 import com.hyfish.app.view.fishes.FishesViewModel
 import com.hyfish.app.view.forum.ForumViewModel
 import com.hyfish.app.view.forum.post.PostAddViewModel
+import com.hyfish.app.view.forum.post.PostDetailViewModel
 import com.hyfish.app.view.history.HistoryViewModel
 import com.hyfish.app.view.home.HomeViewModel
 import com.hyfish.app.view.login.LoginViewModel
@@ -43,6 +44,9 @@ class ViewModelFactory(
             }
             modelClass.isAssignableFrom(PostAddViewModel::class.java) -> {
                 PostAddViewModel(forumRepo) as T
+            }
+            modelClass.isAssignableFrom(PostDetailViewModel::class.java) -> {
+                PostDetailViewModel(forumRepo) as T
             }
             modelClass.isAssignableFrom(ScanViewModel::class.java) -> {
                 ScanViewModel(scanRepo, fishRepo) as T

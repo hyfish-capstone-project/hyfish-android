@@ -52,6 +52,14 @@ class PostAdapter : ListAdapter<PostItem, PostAdapter.ItemViewHolder>(DIFF_CALLB
             binding.tvItemBody.text = if (item.body.length > 200) item.body.substring(0, 200) else item.body
             binding.tvItemLikes.text = binding.root.context.getString(R.string.item_likes, item.likes)
             binding.tvItemComments.text = binding.root.context.getString(R.string.item_comments, item.comments.size)
+
+            binding.btLike.setOnClickListener {
+//                TODO: like post
+            }
+
+            binding.btComment.setOnClickListener {
+                itemView.performClick()
+            }
         }
     }
 
