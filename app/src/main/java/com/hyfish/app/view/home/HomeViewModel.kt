@@ -7,10 +7,8 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.hyfish.app.data.ArticleRepository
-import com.hyfish.app.data.ScanRepository
 import com.hyfish.app.data.UserRepository
 import com.hyfish.app.data.api.ArticleItem
-import com.hyfish.app.data.api.CaptureItem
 import com.hyfish.app.data.api.ErrorResponse
 import com.hyfish.app.data.pref.UserModel
 import kotlinx.coroutines.launch
@@ -48,7 +46,6 @@ class HomeViewModel(
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
                 val errorMessage = errorBody.message
-//                _message.postValue(Event(errorMessage ?: "An error occurred"))
                 _loading.postValue(false)
             } catch (e: Exception) {
                 _loading.postValue(false)

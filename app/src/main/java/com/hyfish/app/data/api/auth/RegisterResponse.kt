@@ -7,19 +7,15 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class RegisterResponse(
 
-	@field:SerializedName("data")
-	val data: RegisterData
+    @field:SerializedName("data") val data: RegisterData
 ) : Parcelable
 
 @Parcelize
 data class RegisterData(
 
-	@field:SerializedName("id")
-	val id: Int,
+    @field:SerializedName("id") val id: Int,
 
-	@field:SerializedName("email")
-	val email: String,
+    @field:SerializedName("email") val email: String,
 
-	@field:SerializedName("username")
-	val username: String
+    @field:SerializedName("username") val username: String
 ) : Parcelable

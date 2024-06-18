@@ -36,23 +36,18 @@ class LoginActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        binding.textView.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-
-        viewModel.loading.observe(this) {
-            binding.btSubmit.isEnabled = !it
-        }
-
         viewModel.error.observe(this) {
             it.getContentIfNotHandled()?.let { message ->
                 showError(message)
             }
         }
 
+        setupRegister()
+
+        showLoading()
+
         setupAction()
+
         setupViewModel()
     }
 
@@ -79,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
                 binding.inPassword.error = getString(R.string.field_required)
             }
 
-            if(binding.inUsername.error != null || binding.inPassword.error != null) return@setOnClickListener
+            if (binding.inUsername.error != null || binding.inPassword.error != null) return@setOnClickListener
 
             val loginRequest = LoginRequest(username.toString(), password.toString())
             viewModel.login(loginRequest)
@@ -93,6 +88,20 @@ class LoginActivity : AppCompatActivity() {
             setPositiveButton(getString(R.string.ok)) { _, _ -> }
             create()
             show()
+        }
+    }
+
+    private fun setupRegister() {
+        binding.textView.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    private fun showLoading() {
+        viewModel.loading.observe(this) {
+            binding.btSubmit.isEnabled = !it
         }
     }
 }

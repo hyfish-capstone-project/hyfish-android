@@ -26,10 +26,9 @@ class HistoryViewModel(
             val captures = scanRepo.getCaptures().data
             val fishes = fishRepo.getFishes().data
 
-            val capturesWithFish = captures
-                .sortedByDescending { it.updatedAt }
-                .map { capture ->
+            val capturesWithFish = captures.sortedByDescending { it.updatedAt }.map { capture ->
                 val fish = fishes.find { it.id == capture.fishId }
+
                 return@map CaptureItemWithFish(
                     id = capture.id,
                     fishId = capture.fishId,

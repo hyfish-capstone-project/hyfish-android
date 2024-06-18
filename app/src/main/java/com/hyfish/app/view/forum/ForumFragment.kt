@@ -19,6 +19,7 @@ import com.hyfish.app.view.forum.post.PostDetailActivity
 class ForumFragment : Fragment() {
 
     private var _binding: FragmentForumBinding? = null
+
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<ForumViewModel> {
@@ -38,32 +39,15 @@ class ForumFragment : Fragment() {
         val root: View = binding.root
 
         binding.rvPosts.layoutManager = LinearLayoutManager(activity)
-        val postAdapter = PostAdapter()
-        binding.rvPosts.adapter = postAdapter
-        postAdapter.setOnItemClickCallback(object : PostAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: PostItem) {
-                val intent = Intent(activity, PostDetailActivity::class.java)
-                intent.putExtra(PostDetailActivity.EXTRA_POST, data)
-                startActivity(intent)
-            }
-        })
-
-        viewModel.loading.observe(viewLifecycleOwner) {
-            binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
-        }
-
-        viewModel.forums.observe(viewLifecycleOwner) {
-            postAdapter.submitList(it)
-            binding.emptyText.visibility = if (it.isNullOrEmpty()) View.VISIBLE else View.GONE
-        }
-
-        binding.fabCreatePost.setOnClickListener {
-            val intent = Intent(activity, PostAddActivity::class.java)
-            addPostLauncher.launch(intent)
-        }
 
         binding.emptyText.visibility =
             if (viewModel.forums.value.isNullOrEmpty()) View.VISIBLE else View.GONE
+
+        setupPostAdapter()
+
+        showLoading()
+
+        setupAddPostButton()
 
         return root
     }
@@ -76,5 +60,37 @@ class ForumFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setupPostAdapter() {
+        val postAdapter = PostAdapter()
+
+        binding.rvPosts.adapter = postAdapter
+
+        postAdapter.setOnItemClickCallback(object : PostAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: PostItem) {
+                val intent = Intent(activity, PostDetailActivity::class.java)
+                intent.putExtra(PostDetailActivity.EXTRA_POST, data)
+                startActivity(intent)
+            }
+        })
+
+        viewModel.forums.observe(viewLifecycleOwner) {
+            postAdapter.submitList(it)
+            binding.emptyText.visibility = if (it.isNullOrEmpty()) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun showLoading() {
+        viewModel.loading.observe(viewLifecycleOwner) {
+            binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun setupAddPostButton() {
+        binding.fabCreatePost.setOnClickListener {
+            val intent = Intent(activity, PostAddActivity::class.java)
+            addPostLauncher.launch(intent)
+        }
     }
 }

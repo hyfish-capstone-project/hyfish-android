@@ -5,12 +5,10 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class LikePostResponse(
-	val message: String,
-	val status: Boolean
+    val message: String, val status: Boolean
 ) : Parcelable
 
 @Parcelize
 data class UnlikePostResponse(
-	val message: String,
-	val status: Boolean
+    val message: String, val status: Boolean
 ) : Parcelable

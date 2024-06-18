@@ -7,9 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ErrorResponse(
 
-	@field:SerializedName("message")
-	val message: String,
+    @field:SerializedName("message") val message: String,
 
-	@field:SerializedName("status")
-	val status: Boolean
+    @field:SerializedName("status") val status: Boolean
 ) : Parcelable

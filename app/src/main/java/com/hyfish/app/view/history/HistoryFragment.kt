@@ -23,6 +23,7 @@ class HistoryFragment : Fragment() {
     }
 
     private var _binding: FragmentHistoryBinding? = null
+
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -37,38 +38,17 @@ class HistoryFragment : Fragment() {
         }
 
         binding.rvCaptures.layoutManager = LinearLayoutManager(activity)
-        val captureAdapter = CaptureAdapter()
-        binding.rvCaptures.adapter = captureAdapter
-        captureAdapter.setOnItemClickCallback(object : CaptureAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: CaptureItemWithFish) {
-                val intent = Intent(activity, ScanResultActivity::class.java)
-                intent.putExtra(ScanResultActivity.EXTRA_CAPTURE, data)
-                startActivity(intent)
-            }
-        })
-
-        binding.fabCreateScan.setOnClickListener {
-            val intent = Intent(activity, ScanActivity::class.java)
-            startActivity(intent)
-        }
-
-        viewModel.loading.observe(viewLifecycleOwner) {
-            binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
-        }
-
-        viewModel.capturesWithFishes.observe(viewLifecycleOwner) { capturesWithFishes ->
-            captureAdapter.submitList(capturesWithFishes)
-            binding.emptyText.visibility =
-                if (capturesWithFishes.isNullOrEmpty()) View.VISIBLE else View.GONE
-        }
-
-        if (viewModel.capturesWithFishes.value.isNullOrEmpty()) {
-            viewModel.getCapturesWithFishes()
-        }
 
         binding.emptyText.visibility =
             if (viewModel.capturesWithFishes.value.isNullOrEmpty()) View.VISIBLE else View.GONE
 
+        setupCaptureAdapter()
+
+        setupAddScanButton()
+
+        showLoading()
+
+        setupFishCapture()
 
         return root
     }
@@ -82,5 +62,42 @@ class HistoryFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setupAddScanButton() {
+        binding.fabCreateScan.setOnClickListener {
+            val intent = Intent(activity, ScanActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun showLoading() {
+        viewModel.loading.observe(viewLifecycleOwner) {
+            binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun setupCaptureAdapter() {
+        val captureAdapter = CaptureAdapter()
+        binding.rvCaptures.adapter = captureAdapter
+        captureAdapter.setOnItemClickCallback(object : CaptureAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: CaptureItemWithFish) {
+                val intent = Intent(activity, ScanResultActivity::class.java)
+                intent.putExtra(ScanResultActivity.EXTRA_CAPTURE, data)
+                startActivity(intent)
+            }
+        })
+
+        viewModel.capturesWithFishes.observe(viewLifecycleOwner) { capturesWithFishes ->
+            captureAdapter.submitList(capturesWithFishes)
+            binding.emptyText.visibility =
+                if (capturesWithFishes.isNullOrEmpty()) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun setupFishCapture() {
+        if (viewModel.capturesWithFishes.value.isNullOrEmpty()) {
+            viewModel.getCapturesWithFishes()
+        }
     }
 }

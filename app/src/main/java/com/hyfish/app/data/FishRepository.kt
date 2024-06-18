@@ -1,7 +1,6 @@
 package com.hyfish.app.data
 
 import com.hyfish.app.data.api.ApiConfig
-import com.hyfish.app.data.api.FishItem
 import com.hyfish.app.data.api.FishResponse
 import com.hyfish.app.data.pref.UserPreference
 import kotlinx.coroutines.flow.first
@@ -27,9 +26,8 @@ class FishRepository private constructor(
         private var instance: FishRepository? = null
         fun getInstance(
             userPreference: UserPreference
-        ): FishRepository =
-            instance ?: synchronized(this) {
-                instance ?: FishRepository(userPreference)
-            }.also { instance = it }
+        ): FishRepository = instance ?: synchronized(this) {
+            instance ?: FishRepository(userPreference)
+        }.also { instance = it }
     }
 }

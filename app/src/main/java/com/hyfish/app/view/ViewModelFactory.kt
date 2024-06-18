@@ -33,30 +33,39 @@ class ViewModelFactory(
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
                 RegisterViewModel(userRepo) as T
             }
+
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
                 LoginViewModel(userRepo) as T
             }
+
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(userRepo, articleRepo) as T
             }
+
             modelClass.isAssignableFrom(ForumViewModel::class.java) -> {
                 ForumViewModel(forumRepo) as T
             }
+
             modelClass.isAssignableFrom(PostAddViewModel::class.java) -> {
                 PostAddViewModel(forumRepo) as T
             }
+
             modelClass.isAssignableFrom(PostDetailViewModel::class.java) -> {
                 PostDetailViewModel(forumRepo) as T
             }
+
             modelClass.isAssignableFrom(ScanViewModel::class.java) -> {
                 ScanViewModel(scanRepo, fishRepo) as T
             }
+
             modelClass.isAssignableFrom(HistoryViewModel::class.java) -> {
                 HistoryViewModel(scanRepo, fishRepo) as T
             }
+
             modelClass.isAssignableFrom(FishesViewModel::class.java) -> {
                 FishesViewModel(fishRepo) as T
             }
+
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
     }
@@ -64,6 +73,7 @@ class ViewModelFactory(
     companion object {
         @Volatile
         private var INSTANCE: ViewModelFactory? = null
+
         @JvmStatic
         fun getInstance(context: Context): ViewModelFactory {
             if (INSTANCE == null) {

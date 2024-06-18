@@ -32,13 +32,20 @@ class ScanResultActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        setupCaptureItem()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
+    }
+
+    private fun setupCaptureItem() {
         val item = intent.getParcelableExtra<CaptureItemWithFish>(EXTRA_CAPTURE)
 
         Log.d("CaptureItem", "Showing item $item")
         if (item != null) {
-            Glide.with(binding.root.context)
-                .load(item.imageUrl)
-                .into(binding.ivImage)
+            Glide.with(binding.root.context).load(item.imageUrl).into(binding.ivImage)
 
             binding.tvClassification.visibility = View.GONE
             binding.cvClassification.visibility = View.GONE
@@ -54,8 +61,7 @@ class ScanResultActivity : AppCompatActivity() {
                 ScanActivity.ScanType.CLASSIFICATION.value -> {
                     item.fish?.let { fish ->
                         if (fish.images.isNotEmpty()) {
-                            Glide.with(binding.root.context)
-                                .load(fish.images[0])
+                            Glide.with(binding.root.context).load(fish.images[0])
                                 .into(binding.ivFishPhoto)
                         }
 
@@ -70,6 +76,7 @@ class ScanResultActivity : AppCompatActivity() {
                         }
                     }
                 }
+
                 ScanActivity.ScanType.FRESHNESS.value -> {
                     if (item.freshness?.lowercase()?.contains("not") == true) {
                         binding.tvNotFresh.text = item.freshness
@@ -80,16 +87,12 @@ class ScanResultActivity : AppCompatActivity() {
                     }
                     binding.tvFreshness.visibility = View.VISIBLE
                 }
+
                 else -> {
                     throw IllegalArgumentException("Unknown scan type")
                 }
             }
         }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressedDispatcher.onBackPressed()
-        return true
     }
 
     private fun showToast(message: String) {

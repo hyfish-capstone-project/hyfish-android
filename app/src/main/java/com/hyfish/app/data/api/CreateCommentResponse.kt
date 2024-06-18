@@ -7,13 +7,10 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class CreateCommentResponse(
 
-	@field:SerializedName("data")
-	val data: CommentsItem,
+    @field:SerializedName("data") val data: CommentsItem,
 
-	@field:SerializedName("message")
-	val message: String,
+    @field:SerializedName("message") val message: String,
 
-	@field:SerializedName("status")
-	val status: Boolean
+    @field:SerializedName("status") val status: Boolean
 ) : Parcelable
 
