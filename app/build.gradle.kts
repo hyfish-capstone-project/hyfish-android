@@ -66,8 +66,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.glide)
     implementation(libs.circleimageview)
-    implementation(libs.tensorflow.lite.task.vision)
-    implementation(libs.tensorflow.lite.metadata)
     implementation(libs.androidx.camera.core)
     implementation(libs.androidx.camera.camera2)
     implementation(libs.androidx.camera.lifecycle)
