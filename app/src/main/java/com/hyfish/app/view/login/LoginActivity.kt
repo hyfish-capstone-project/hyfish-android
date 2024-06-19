@@ -2,6 +2,7 @@ package com.hyfish.app.view.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -102,6 +103,7 @@ class LoginActivity : AppCompatActivity() {
     private fun showLoading() {
         viewModel.loading.observe(this) {
             binding.btSubmit.isEnabled = !it
+            binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
         }
     }
 }

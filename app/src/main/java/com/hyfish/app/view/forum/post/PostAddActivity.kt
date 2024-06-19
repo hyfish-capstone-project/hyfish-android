@@ -1,17 +1,25 @@
 package com.hyfish.app.view.forum.post
 
+import android.Manifest
+import android.app.Activity
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.hyfish.app.R
 import com.hyfish.app.databinding.ActivityPostAddBinding
+import com.hyfish.app.util.getImageUri
 import com.hyfish.app.util.reduceFileImage
 import com.hyfish.app.util.uriToFile
 import com.hyfish.app.view.ViewModelFactory
@@ -40,13 +48,7 @@ class PostAddActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        showLoading()
-
-        setupStatus()
-
-        setupGalleryButton()
-
-        setupUploadButton()
+        setupAction()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -54,28 +56,30 @@ class PostAddActivity : AppCompatActivity() {
         return true
     }
 
-    private fun setupUploadButton() {
-        binding.btSubmit.setOnClickListener {
-            uploadImage()
-        }
-    }
-
     private fun uploadImage() {
-        currentImageUri?.let { uri ->
-            val imageFile = uriToFile(uri, this).reduceFileImage()
-            val title = binding.inTitle.text.toString()
-            val body = binding.inBody.text.toString()
-            val tags = listOf("test", "tag1")
-            val images = listOf(imageFile)
-
-            viewModel.createPost(title, body, tags, images)
+        val title = binding.inTitle.text.toString()
+        val body = binding.inBody.text.toString()
+        val tags = emptyList<String>()
+        val images = if (currentImageUri != null) {
+            val imageFile = uriToFile(currentImageUri!!, this).reduceFileImage()
+            listOf(imageFile)
+        } else {
+            emptyList()
         }
+
+        viewModel.createPost(title, body, tags, images)
     }
 
     private fun showImage() {
+        if (currentImageUri == null) {
+            binding.ivImage.visibility = View.GONE
+            return
+        }
+
         currentImageUri?.let {
             Log.d("Image URI", "showImage: $it")
             binding.ivImage.setImageURI(it)
+            binding.ivImage.visibility = View.VISIBLE
         }
     }
 
@@ -94,21 +98,81 @@ class PostAddActivity : AppCompatActivity() {
         launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
-    private fun showLoading() {
+    private val requestPermission = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            startCamera()
+        } else {
+            showToast(getString(R.string.no_permission))
+        }
+    }
+
+    private val launchCamera = registerForActivityResult(
+        ActivityResultContracts.TakePicture()
+    ) { isSuccessful ->
+        if (isSuccessful) {
+            currentImageUri?.let {
+                showImage()
+            }
+        }
+    }
+
+    private fun setupAction() {
+        viewModel.status.observe(this) { success ->
+            if (success) {
+                setResult(Activity.RESULT_OK)
+                finish()
+            }
+        }
+
         viewModel.loading.observe(this) {
             binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
         }
-    }
 
-    private fun setupStatus() {
-        binding.btAddImage.setOnClickListener {
+        viewModel.message.observe(this) {
+            it.getContentIfNotHandled()?.let { message ->
+                showError(message)
+            }
+        }
+
+        binding.btGallery.setOnClickListener {
             startGallery()
+        }
+
+        binding.btCamera.setOnClickListener {
+            startCamera()
+        }
+
+        binding.btSubmit.setOnClickListener {
+            uploadImage()
         }
     }
 
-    private fun setupGalleryButton() {
-        binding.btAddImage.setOnClickListener {
-            startGallery()
+    private fun showError(message: String) {
+        AlertDialog.Builder(this).apply {
+            setTitle(getString(R.string.error))
+            setMessage(message)
+            setPositiveButton(getString(R.string.ok)) { _, _ -> }
+            create()
+            show()
         }
+    }
+
+    private fun startCamera() {
+        if (!permissionGranted()) {
+            requestPermission.launch(Manifest.permission.CAMERA)
+        } else {
+            currentImageUri = getImageUri(this)
+            launchCamera.launch(currentImageUri!!)
+        }
+    }
+
+    private fun permissionGranted() = ContextCompat.checkSelfPermission(
+        this, Manifest.permission.CAMERA
+    ) == PackageManager.PERMISSION_GRANTED
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }

@@ -14,6 +14,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.hyfish.app.R
 import com.hyfish.app.data.api.CaptureItemWithFish
 import com.hyfish.app.data.api.FishItem
@@ -77,6 +79,11 @@ class ScanActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityScanBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         supportActionBar?.title = getString(R.string.title_scan)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -110,7 +117,7 @@ class ScanActivity : AppCompatActivity() {
     }
 
     private fun permissionGranted() = ContextCompat.checkSelfPermission(
-        this, PERMISSION
+        this, Manifest.permission.CAMERA
     ) == PackageManager.PERMISSION_GRANTED
 
     private fun uploadImage(type: ScanType) {
@@ -187,6 +194,5 @@ class ScanActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "ImageURI"
         private const val IMAGE_PICKER_TAG = "ImagePicker"
-        private const val PERMISSION = Manifest.permission.CAMERA
     }
 }

@@ -18,120 +18,145 @@
         app:srcCompat="@drawable/gradient_login"
         tools:ignore="ContentDescription" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="188dp"
-            android:layout_height="59dp"
-            android:layout_marginTop="16dp"
-            android:contentDescription="@string/hyfish_logo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/hyfish_logo" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/login_title"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/usernameLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/in_username"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/sv_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                android:ems="10"
-                android:hint="@string/username"
-                android:inputType="textNoSuggestions" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/passwordLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            app:endIconMode="password_toggle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/usernameLayout">
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="188dp"
+                    android:layout_height="59dp"
+                    android:layout_marginTop="16dp"
+                    android:contentDescription="@string/hyfish_logo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.496"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/hyfish_logo" />
 
-            <com.hyfish.app.view.customview.PasswordCharacters
-                android:id="@+id/in_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                android:ems="10"
-                android:hint="@string/password"
-                android:inputType="textPassword" />
-        </com.google.android.material.textfield.TextInputLayout>
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/login_title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-        <Button
-            android:id="@+id/bt_submit"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/login"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordLayout" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/usernameLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bt_submit" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/in_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/md_theme_background"
+                        android:ems="10"
+                        android:hint="@string/username"
+                        android:inputType="textNoSuggestions" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/login_to_register"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/passwordLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:endIconMode="password_toggle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/usernameLayout">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <com.hyfish.app.view.customview.PasswordCharacters
+                        android:id="@+id/in_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/md_theme_background"
+                        android:ems="10"
+                        android:hint="@string/password"
+                        android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/bt_submit"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/login"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/passwordLayout" />
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/bt_submit" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/login_to_register"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:indeterminateAnimationType="disjoint"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,7 +35,11 @@ data class PostItem(
 
     @field:SerializedName("likes") var likes: Int,
 
-    @field:SerializedName("tags") val tags: List<String>
+    @field:SerializedName("tags") val tags: List<String>,
+
+    @field:SerializedName("isLiked") var isLiked: Boolean,
+
+    @field:SerializedName("isFollowed") var isFollowed: Boolean
 ) : Parcelable
 
 @Parcelize

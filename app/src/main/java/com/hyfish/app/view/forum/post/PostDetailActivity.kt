@@ -45,6 +45,12 @@ class PostDetailActivity : AppCompatActivity() {
 
     private fun updateCounters(post: PostItem) {
         binding.tvItemLikes.text = getString(R.string.item_likes, post.likes)
+        binding.btLike.setCompoundDrawablesWithIntrinsicBounds(
+            if (post.isLiked) R.drawable.ic_thumb_up else R.drawable.ic_thumb_up_off,
+            0,
+            0,
+            0
+        )
         binding.tvItemComments.text = getString(R.string.item_comments, post.comments.size)
     }
 
@@ -78,14 +84,13 @@ class PostDetailActivity : AppCompatActivity() {
                     } else {
                         post.likes--
                     }
+                    post.isLiked = liked
                     updateCounters(post)
                 }
             }
 
             binding.btLike.setOnClickListener {
-//                TODO: get if post is liked
-                val liked = false
-                if (liked) {
+                if (post.isLiked) {
                     viewModel.unlikePost(post.id)
                 } else {
                     viewModel.likePost(post.id)

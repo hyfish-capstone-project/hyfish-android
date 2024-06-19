@@ -7,83 +7,109 @@
     android:layout_height="match_parent"
     tools:context=".view.forum.post.PostAddActivity">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/titleLayout"
+    <ScrollView
+        android:id="@+id/sv_layout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/in_title"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:ems="10"
-            android:hint="@string/title"
-            android:inputType="textNoSuggestions" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:orientation="vertical">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/bodyLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleLayout">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/titleLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/in_body"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:ems="10"
-            android:hint="@string/body"
-            android:inputType="textMultiLine|textNoSuggestions"
-            android:maxLines="5"
-            android:scrollbars="vertical" />
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/in_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/md_theme_background"
+                    android:ems="10"
+                    android:hint="@string/title"
+                    android:inputType="textNoSuggestions" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/bt_add_image"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="Select Image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bodyLayout" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/bodyLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp">
 
-    <ImageView
-        android:id="@+id/iv_image"
-        android:layout_width="0dp"
-        android:layout_height="240dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_add_image"
-        app:srcCompat="@drawable/ic_placeholder" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/in_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/md_theme_background"
+                    android:ems="10"
+                    android:hint="@string/body"
+                    android:inputType="textMultiLine|textNoSuggestions"
+                    android:maxLines="5"
+                    android:scrollbars="vertical" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/bt_submit"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="Post"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_image" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/bt_gallery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="0.5"
+                    android:drawableLeft="@drawable/ic_image"
+                    android:drawableTint="@color/md_theme_onPrimary"
+                    android:text="@string/gallery" />
+
+                <Button
+                    android:id="@+id/bt_camera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="0.5"
+                    android:drawableLeft="@drawable/ic_camera"
+                    android:drawableTint="@color/md_theme_onPrimary"
+                    android:text="@string/camera" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_image"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_placeholder"
+                tools:visibility="visible" />
+
+            <Button
+                android:id="@+id/bt_submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/post" />
+
+        </LinearLayout>
+    </ScrollView>
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progressIndicator"

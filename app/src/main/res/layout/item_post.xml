@@ -10,6 +10,7 @@
     android:layout_marginTop="4dp"
     android:layout_marginEnd="8dp"
     android:layout_marginBottom="4dp"
+    android:foregroundTint="#00FFFFFF"
     card_view:cardCornerRadius="6dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,11 +22,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:drawableTint="@color/md_theme_onPrimary"
             android:text="@string/like"
-            card_view:icon="@drawable/ic_thumb_up_off"
             card_view:layout_constraintEnd_toStartOf="@+id/space"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toTopOf="@+id/space" />
+            card_view:layout_constraintTop_toTopOf="@+id/space"
+            tools:icon="@drawable/ic_thumb_up_off" />
 
         <Space
             android:id="@+id/space"
@@ -75,13 +77,14 @@
 
         <TextView
             android:id="@+id/tv_item_username"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_toEndOf="@id/iv_item_profile"
+            android:layout_marginEnd="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="bold"
+            card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent"
             tools:text="Username" />
@@ -92,6 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
             android:text="@string/item_date"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             card_view:layout_constraintEnd_toEndOf="parent"

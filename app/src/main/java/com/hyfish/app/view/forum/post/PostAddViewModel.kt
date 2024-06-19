@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.hyfish.app.data.ForumRepository
 import com.hyfish.app.data.api.ErrorResponse
+import com.hyfish.app.util.EventOnce
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -24,6 +25,9 @@ class PostAddViewModel(
 
     private val _status = MutableLiveData<Boolean>()
     val status: LiveData<Boolean> = _status
+
+    private val _message = MutableLiveData<EventOnce<String>>()
+    val message: LiveData<EventOnce<String>> = _message
 
     fun createPost(
         title: String, body: String, tags: List<String>, images: List<File>
@@ -46,8 +50,10 @@ class PostAddViewModel(
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
                 val errorMessage = errorBody.message
+                _message.postValue(EventOnce(errorMessage))
                 _loading.postValue(false)
             } catch (e: Exception) {
+                _message.postValue(EventOnce(e.message ?: "Unknown error"))
                 _loading.postValue(false)
             }
         }
