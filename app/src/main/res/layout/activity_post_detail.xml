@@ -31,11 +31,12 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:drawableTint="@color/md_theme_onPrimary"
                     android:text="@string/like"
-                    app:icon="@drawable/ic_thumb_up_off"
                     app:layout_constraintEnd_toStartOf="@+id/space"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/space" />
+                    app:layout_constraintTop_toTopOf="@+id/space"
+                    tools:icon="@drawable/ic_thumb_up_off" />
 
                 <Space
                     android:id="@+id/space"

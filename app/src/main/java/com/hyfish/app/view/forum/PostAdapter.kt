@@ -13,12 +13,16 @@ import com.hyfish.app.databinding.ItemPostBinding
 
 class PostAdapter : ListAdapter<PostItem, PostAdapter.ItemViewHolder>(DIFF_CALLBACK) {
     private var onItemClickCallback: OnItemClickCallback? = null
+    private var onLikeClickCallback: OnItemClickCallback? = null
 
     interface OnItemClickCallback {
         fun onItemClicked(data: PostItem)
     }
 
-    class ItemViewHolder(private val binding: ItemPostBinding) :
+    class ItemViewHolder(
+        private val binding: ItemPostBinding,
+        private var onLikeClickCallback: OnItemClickCallback
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: PostItem) {
             if (item.images.isNotEmpty()) {
@@ -36,8 +40,15 @@ class PostAdapter : ListAdapter<PostItem, PostAdapter.ItemViewHolder>(DIFF_CALLB
             binding.tvItemComments.text =
                 binding.root.context.getString(R.string.item_comments, item.comments.size)
 
+            binding.btLike.setCompoundDrawablesWithIntrinsicBounds(
+                if (item.isLiked) R.drawable.ic_thumb_up else R.drawable.ic_thumb_up_off,
+                0,
+                0,
+                0
+            )
+
             binding.btLike.setOnClickListener {
-//                TODO: like post
+                onLikeClickCallback.onItemClicked(item)
             }
 
             binding.btComment.setOnClickListener {
@@ -48,7 +59,7 @@ class PostAdapter : ListAdapter<PostItem, PostAdapter.ItemViewHolder>(DIFF_CALLB
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding = ItemPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ItemViewHolder(binding)
+        return ItemViewHolder(binding, onLikeClickCallback!!)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
@@ -63,6 +74,10 @@ class PostAdapter : ListAdapter<PostItem, PostAdapter.ItemViewHolder>(DIFF_CALLB
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
+    }
+
+    fun setOnLikeClickCallback(onLikeClickCallback: OnItemClickCallback) {
+        this.onLikeClickCallback = onLikeClickCallback
     }
 
     companion object {

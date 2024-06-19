@@ -15,6 +15,7 @@ import com.hyfish.app.databinding.FragmentForumBinding
 import com.hyfish.app.view.ViewModelFactory
 import com.hyfish.app.view.forum.post.PostAddActivity
 import com.hyfish.app.view.forum.post.PostDetailActivity
+import com.hyfish.app.view.forum.post.PostDetailViewModel
 
 class ForumFragment : Fragment() {
 
@@ -23,6 +24,10 @@ class ForumFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<ForumViewModel> {
+        ViewModelFactory.getInstance(requireActivity())
+    }
+
+    private val postViewModel by viewModels<PostDetailViewModel> {
         ViewModelFactory.getInstance(requireActivity())
     }
 
@@ -72,6 +77,22 @@ class ForumFragment : Fragment() {
                 val intent = Intent(activity, PostDetailActivity::class.java)
                 intent.putExtra(PostDetailActivity.EXTRA_POST, data)
                 startActivity(intent)
+            }
+        })
+
+        postViewModel.newLike.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let {
+                viewModel.getForums()
+            }
+        }
+
+        postAdapter.setOnLikeClickCallback(object : PostAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: PostItem) {
+                if (data.isLiked) {
+                    postViewModel.unlikePost(data.id)
+                } else {
+                    postViewModel.likePost(data.id)
+                }
             }
         })
 
