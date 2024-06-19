@@ -27,7 +27,7 @@
             android:layout_weight="0.5"
             android:contentDescription="@string/avatar"
             app:srcCompat="@drawable/ic_account_circle"
-            app:tint="@color/md_theme_onPrimary" />
+            app:tint="@color/md_theme_onPrimaryContainer" />
 
         <Space
             android:layout_width="8dp"
@@ -57,7 +57,7 @@
             android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/logout"
             android:src="@drawable/ic_logout"
-            app:tint="@color/md_theme_onPrimary" />
+            app:tint="@color/md_theme_onPrimaryContainer" />
     </LinearLayout>
 
     <TextView
@@ -80,9 +80,11 @@
         android:text="@string/see_all"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/md_theme_secondary"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/tv_articles"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_articles" />
+        app:layout_constraintTop_toTopOf="@+id/tv_articles"
+        tools:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_articles"

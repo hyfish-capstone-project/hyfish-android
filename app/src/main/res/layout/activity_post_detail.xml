@@ -207,7 +207,7 @@
                 android:id="@+id/in_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"
+                android:background="@color/md_theme_background"
                 android:ems="10"
                 android:hint="@string/write_a_comment"
                 android:inputType="text|textAutoComplete|textAutoCorrect" />
