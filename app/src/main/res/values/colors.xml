@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="gradient_start">#F4FEE8</color>
+    <color name="gradient_center">#E8F7FA</color>
+    <color name="gradient_end">#B5DFFE</color>
     <color name="md_theme_primary">#00518C</color>
     <color name="md_theme_onPrimary">#FFFFFF</color>
     <color name="md_theme_primaryContainer">#2876BE</color>
