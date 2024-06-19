@@ -59,21 +59,44 @@
                     android:scrollbars="vertical" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/bt_add_image"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:text="@string/select_image" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/bt_gallery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="0.5"
+                    android:drawableLeft="@drawable/ic_image"
+                    android:drawableTint="@color/md_theme_onPrimary"
+                    android:text="@string/gallery" />
+
+                <Button
+                    android:id="@+id/bt_camera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="0.5"
+                    android:drawableLeft="@drawable/ic_camera"
+                    android:drawableTint="@color/md_theme_onPrimary"
+                    android:text="@string/camera" />
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/iv_image"
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:layout_marginTop="16dp"
-                app:srcCompat="@drawable/ic_placeholder" />
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_placeholder"
+                tools:visibility="visible" />
 
             <Button
                 android:id="@+id/bt_submit"
@@ -84,6 +107,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/post" />
+
         </LinearLayout>
     </ScrollView>
 

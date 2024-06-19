@@ -110,7 +110,7 @@ class ScanActivity : AppCompatActivity() {
     }
 
     private fun permissionGranted() = ContextCompat.checkSelfPermission(
-        this, PERMISSION
+        this, Manifest.permission.CAMERA
     ) == PackageManager.PERMISSION_GRANTED
 
     private fun uploadImage(type: ScanType) {
@@ -187,6 +187,5 @@ class ScanActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "ImageURI"
         private const val IMAGE_PICKER_TAG = "ImagePicker"
-        private const val PERMISSION = Manifest.permission.CAMERA
     }
 }
