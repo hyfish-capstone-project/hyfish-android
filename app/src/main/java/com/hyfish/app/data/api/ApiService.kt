@@ -68,4 +68,7 @@ interface ApiService {
 
     @GET("fishes")
     suspend fun getFishes(): FishResponse
+
+    @GET("fishes/{fish_id}")
+    suspend fun getDetailFishes(): FishDetailResponse
 }
