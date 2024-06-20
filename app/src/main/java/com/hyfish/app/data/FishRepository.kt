@@ -1,6 +1,7 @@
 package com.hyfish.app.data
 
 import com.hyfish.app.data.api.ApiConfig
+import com.hyfish.app.data.api.FishDetailResponse
 import com.hyfish.app.data.api.FishResponse
 import com.hyfish.app.data.pref.UserPreference
 import kotlinx.coroutines.flow.first
@@ -19,6 +20,12 @@ class FishRepository private constructor(
         return apiService.getFishes().also {
             cachedFishes = it
         }
+    }
+
+    suspend fun getFish(id: Int): FishDetailResponse {
+        val user = runBlocking { userPreference.getSession().first() }
+        val apiService = ApiConfig.getApiService(user.token)
+        return apiService.getFish(id)
     }
 
     companion object {
