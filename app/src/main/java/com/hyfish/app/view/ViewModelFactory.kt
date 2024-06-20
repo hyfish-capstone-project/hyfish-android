@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.hyfish.app.data.ArticleRepository
+import com.hyfish.app.data.FishDetailRepository
 import com.hyfish.app.data.FishRepository
 import com.hyfish.app.data.ForumRepository
 import com.hyfish.app.data.ScanRepository
 import com.hyfish.app.data.UserRepository
 import com.hyfish.app.di.Injection
+import com.hyfish.app.view.fishes.DetailFishViewModel
 import com.hyfish.app.view.fishes.FishesViewModel
 import com.hyfish.app.view.forum.ForumViewModel
 import com.hyfish.app.view.forum.post.PostAddViewModel
@@ -25,6 +27,7 @@ class ViewModelFactory(
     private val forumRepo: ForumRepository,
     private val scanRepo: ScanRepository,
     private val fishRepo: FishRepository,
+    private val detailFishRepo: FishDetailRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -66,6 +69,10 @@ class ViewModelFactory(
                 FishesViewModel(fishRepo) as T
             }
 
+            modelClass.isAssignableFrom(DetailFishViewModel::class.java) -> {
+                DetailFishViewModel(detailFishRepo) as T
+            }
+
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
     }
@@ -84,6 +91,7 @@ class ViewModelFactory(
                         Injection.provideForumRepository(context),
                         Injection.provideScanRepository(context),
                         Injection.provideFishRepository(context),
+                        Injection.provideDetailFishRepository(context)
                     )
                 }
             }
