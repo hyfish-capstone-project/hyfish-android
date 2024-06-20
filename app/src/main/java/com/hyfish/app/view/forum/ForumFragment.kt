@@ -6,12 +6,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hyfish.app.data.api.PostItem
 import com.hyfish.app.databinding.FragmentForumBinding
+import com.hyfish.app.view.MainViewModel
 import com.hyfish.app.view.ViewModelFactory
 import com.hyfish.app.view.forum.post.PostAddActivity
 import com.hyfish.app.view.forum.post.PostDetailActivity
@@ -31,6 +34,8 @@ class ForumFragment : Fragment() {
         ViewModelFactory.getInstance(requireActivity())
     }
 
+    private val sharedViewModel by activityViewModels<MainViewModel>()
+
     private val addPostLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             viewModel.getForums() // Refresh data
@@ -47,6 +52,24 @@ class ForumFragment : Fragment() {
 
         binding.emptyText.visibility =
             if (viewModel.forums.value.isNullOrEmpty()) View.VISIBLE else View.GONE
+
+        with(binding) {
+            searchView.setupWithSearchBar(searchBar)
+            searchView
+                .editText
+                .setOnEditorActionListener { _, _, _ ->
+                    searchBar.setText(searchView.text)
+                    searchView.hide()
+                    viewModel.getForums(searchBar.text.toString())
+                    false
+                }
+        }
+
+        viewModel.message.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { message ->
+                showToast(message)
+            }
+        }
 
         setupPostAdapter()
 
@@ -113,5 +136,9 @@ class ForumFragment : Fragment() {
             val intent = Intent(activity, PostAddActivity::class.java)
             addPostLauncher.launch(intent)
         }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
     }
 }

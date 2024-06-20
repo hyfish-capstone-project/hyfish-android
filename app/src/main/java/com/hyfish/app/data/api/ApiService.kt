@@ -34,6 +34,9 @@ interface ApiService {
     @GET("forums")
     suspend fun getForums(): ForumResponse
 
+    @GET("forums/search/{keywords}")
+    suspend fun searchForums(@Path("keywords") keywords: String): ForumResponse
+
     @POST("posts")
     @Multipart
     suspend fun createPost(
