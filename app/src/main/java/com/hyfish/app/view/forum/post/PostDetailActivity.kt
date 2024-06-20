@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.hyfish.app.R
 import com.hyfish.app.data.api.PostItem
 import com.hyfish.app.databinding.ActivityPostDetailBinding
+import com.hyfish.app.util.toReadableDate
 import com.hyfish.app.view.ViewModelFactory
 
 @Suppress("DEPRECATION")
@@ -71,7 +72,7 @@ class PostDetailActivity : AppCompatActivity() {
             }
 
             binding.tvItemTitle.text = post.title
-            binding.tvItemDate.text = post.createdAt
+            binding.tvItemDate.text = post.createdAt.toReadableDate()
             binding.tvItemUsername.text = post.author
             binding.tvItemBody.text = post.body
             updateCounters(post)

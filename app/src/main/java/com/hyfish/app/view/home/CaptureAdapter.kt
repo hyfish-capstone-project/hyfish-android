@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hyfish.app.data.api.CaptureItemWithFish
 import com.hyfish.app.databinding.ItemCaptureBinding
+import com.hyfish.app.util.toReadableDate
 import com.hyfish.app.view.scan.ScanActivity
 
 class CaptureAdapter :
@@ -36,7 +37,7 @@ class CaptureAdapter :
                 }
             }
             binding.tvItemDescription.text = item.type
-            binding.tvItemDatetime.text = item.createdAt
+            binding.tvItemDatetime.text = item.createdAt.toReadableDate()
         }
     }
 
