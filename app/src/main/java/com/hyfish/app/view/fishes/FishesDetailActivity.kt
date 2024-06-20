@@ -3,14 +3,20 @@ package com.hyfish.app.view.fishes
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.hyfish.app.data.api.FishItem
 import com.hyfish.app.databinding.ActivityFishesDetailBinding
+import com.hyfish.app.view.ViewModelFactory
 
 class FishesDetailActivity : AppCompatActivity() {
+    private val viewModel by viewModels<FishDetailViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
+
     private lateinit var binding: ActivityFishesDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,13 +55,43 @@ class FishesDetailActivity : AppCompatActivity() {
             binding.tvFishName.text = fish.name
             binding.tvDescription.text = fish.description
 
-            if (fish.nutritionImageUrl?.isNotEmpty() == true) {
-                binding.ivNutrition.visibility = View.VISIBLE
-                Glide.with(binding.root.context).load(fish.nutritionImageUrl)
-                    .into(binding.ivNutrition)
-            } else {
-                binding.ivNutrition.visibility = View.GONE
+            viewModel.fishDetail.observe(this) { fishDetail ->
+                if (fishDetail != null) {
+                    binding.tvFishName.text = fishDetail.name
+                    binding.tvDescription.text = fishDetail.description
+
+                    if (fishDetail.nutritionImage.isNotEmpty()) {
+                        binding.ivNutrition.visibility = View.VISIBLE
+                        Glide.with(binding.root.context).load(fishDetail.nutritionImage)
+                            .into(binding.ivNutrition)
+                    } else {
+                        binding.ivNutrition.visibility = View.GONE
+                    }
+
+                    var recipesText = ""
+                    fishDetail.recipes.forEach { recipe ->
+                        recipesText += recipe.name + "\n\n"
+                        recipesText += "Ingredients:\n"
+                        recipe.ingredients?.forEach { ingredient ->
+                            recipesText += " - ${ingredient?.name} (${ingredient?.amount} ${ingredient?.measurement})\n"
+                        }
+
+                        recipesText += "\n"
+                        recipesText += "Steps:\n"
+                        recipe.steps?.forEach { step ->
+                            recipesText += " - ${step?.description}\n"
+                        }
+                        recipesText += "\n\n\n"
+                    }
+                    binding.tvRecipesText.text = recipesText.ifEmpty { "No recipes available" }
+                }
             }
+
+            viewModel.loading.observe(this) {
+                binding.progressIndicator.visibility = if (it) View.VISIBLE else View.GONE
+            }
+
+            viewModel.getFish(fish.id)
         }
     }
 
