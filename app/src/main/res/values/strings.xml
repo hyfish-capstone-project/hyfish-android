@@ -48,6 +48,7 @@
     <string name="body">Body</string>
     <string name="title_add_post">Create a Post </string>
     <string name="title_post_detail">View Post</string>
+    <string name="title_article_detail">View Article</string>
 
     <string name="create_scan">Create a Scan</string>
     <string name="title_scan_result">Scan Result</string>

@@ -35,6 +35,11 @@ class PostDetailActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        val isArticle = intent.getBooleanExtra(EXTRA_IS_ARTICLE, false)
+        if (isArticle) {
+            supportActionBar?.title = getString(R.string.title_article_detail)
+        }
+
         getPostDetail()
     }
 
@@ -124,5 +129,6 @@ class PostDetailActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_POST = "post"
+        const val EXTRA_IS_ARTICLE = "is_article"
     }
 }

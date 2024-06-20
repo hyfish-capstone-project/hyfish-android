@@ -11,9 +11,11 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hyfish.app.R
 import com.hyfish.app.data.api.CaptureItemWithFish
+import com.hyfish.app.data.api.PostItem
 import com.hyfish.app.databinding.FragmentHomeBinding
 import com.hyfish.app.view.MainViewModel
 import com.hyfish.app.view.ViewModelFactory
+import com.hyfish.app.view.forum.post.PostDetailActivity
 import com.hyfish.app.view.history.HistoryViewModel
 import com.hyfish.app.view.login.LoginActivity
 import com.hyfish.app.view.scan.ScanActivity
@@ -110,6 +112,15 @@ class HomeFragment : Fragment() {
             articleAdapter.submitList(articles)
             binding.tvEmptyA.visibility = if (articles.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
+
+        articleAdapter.setOnItemClickCallback(object : ArticleAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: PostItem) {
+                val intent = Intent(activity, PostDetailActivity::class.java)
+                intent.putExtra(PostDetailActivity.EXTRA_POST, data)
+                intent.putExtra(PostDetailActivity.EXTRA_IS_ARTICLE, true)
+                startActivity(intent)
+            }
+        })
     }
 
     private fun setupScanButton() {
