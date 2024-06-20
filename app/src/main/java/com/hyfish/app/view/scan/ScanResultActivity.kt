@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.hyfish.app.R
 import com.hyfish.app.data.api.CaptureItemWithFish
 import com.hyfish.app.databinding.ActivityScanResultBinding
+import com.hyfish.app.util.toReadableDate
 import com.hyfish.app.view.fishes.FishesDetailActivity
 
 class ScanResultActivity : AppCompatActivity() {
@@ -55,7 +56,7 @@ class ScanResultActivity : AppCompatActivity() {
 
             val scoreStr: String = DecimalFormat("0.00").format(item.score.times(100))
             binding.tvScore.text = getString(R.string.score, scoreStr)
-            binding.tvCreatedAt.text = getString(R.string.created_at, item.createdAt)
+            binding.tvCreatedAt.text = getString(R.string.created_at, item.createdAt.toReadableDate())
 
             when (item.type) {
                 ScanActivity.ScanType.CLASSIFICATION.value -> {

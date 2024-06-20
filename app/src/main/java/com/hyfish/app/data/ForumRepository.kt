@@ -20,6 +20,12 @@ class ForumRepository private constructor(
         return apiService.getForums()
     }
 
+    suspend fun searchForums(query: String): ForumResponse {
+        val user = runBlocking { userPreference.getSession().first() }
+        val apiService = ApiConfig.getApiService(user.token)
+        return apiService.searchForums(query)
+    }
+
     suspend fun createPost(
         title: RequestBody, body: RequestBody, tags: List<String>, images: List<MultipartBody.Part>
     ): CreatePostResponse {

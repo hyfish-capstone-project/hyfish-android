@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.hyfish.app.data.ArticleRepository
 import com.hyfish.app.data.UserRepository
-import com.hyfish.app.data.api.ArticleItem
 import com.hyfish.app.data.api.ErrorResponse
+import com.hyfish.app.data.api.PostItem
 import com.hyfish.app.data.pref.UserModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -22,8 +22,8 @@ class HomeViewModel(
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
 
-    private val _articles = MutableLiveData<List<ArticleItem>>()
-    val articles: LiveData<List<ArticleItem>> = _articles
+    private val _articles = MutableLiveData<List<PostItem>>()
+    val articles: LiveData<List<PostItem>> = _articles
 
     fun getSession(): LiveData<UserModel> {
         return userRepo.getSession().asLiveData()

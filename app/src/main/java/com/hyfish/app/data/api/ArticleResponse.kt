@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ArticleResponse(
-    val data: List<ArticleItem>, val message: String, val status: Boolean
+    val data: List<PostItem>, val message: String, val status: Boolean
 ) : Parcelable
 
 @Parcelize

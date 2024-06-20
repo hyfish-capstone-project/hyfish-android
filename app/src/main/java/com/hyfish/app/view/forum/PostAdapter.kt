@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.hyfish.app.R
 import com.hyfish.app.data.api.PostItem
 import com.hyfish.app.databinding.ItemPostBinding
+import com.hyfish.app.util.toReadableDate
 
 class PostAdapter : ListAdapter<PostItem, PostAdapter.ItemViewHolder>(DIFF_CALLBACK) {
     private var onItemClickCallback: OnItemClickCallback? = null
@@ -32,7 +33,7 @@ class PostAdapter : ListAdapter<PostItem, PostAdapter.ItemViewHolder>(DIFF_CALLB
                 binding.ivItemPhoto.visibility = View.GONE
             }
             binding.tvItemUsername.text = item.title
-            binding.tvItemDate.text = item.createdAt
+            binding.tvItemDate.text = item.createdAt.toReadableDate()
             binding.tvItemBody.text =
                 if (item.body.length > 200) item.body.substring(0, 200) else item.body
             binding.tvItemLikes.text =
