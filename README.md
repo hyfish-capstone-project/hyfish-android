@@ -8,3 +8,9 @@ HyFish is a mobile app designed to make it easier for users to understand about 
 - Scan history
 - Forum to ask and also be a fish marketplace
 - Fish details for educational purpose including fish nutritions and recipes
+
+## Demo
+- [Video](https://drive.google.com/file/d/1Gj_gafAfL4vtdhNIbCe3VJK_z7_Xyr4i/view?usp=drive_link)
+
+## Download APK
+- [Latest Release](https://github.com/hyfish-capstone-project/hyfish-android/releases/latest)
